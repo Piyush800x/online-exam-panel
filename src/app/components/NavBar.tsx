@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai'; 
 
+
+
 export default function NavBar() {
   const [navOpen, setNavOpen] = useState(false);
   const toggleNav = () => {
@@ -11,7 +13,7 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-Grite-600 to-Grite-300 h-300 flex px-5 py-3 text-white">
+    <nav className="bg-gradient-to-r from-Grite-600 to-Grite-300 h-300 flex px-5 py-1 text-white">
       <div className="flex justify-between items-center h-full w-full m-4 px-4 2xl:px-16">
         <Link href="/">
           <Image
@@ -28,10 +30,10 @@ export default function NavBar() {
             <Link href="/">
               <li className='text-Grite-200 hover:text-white text-xl'>Home</li>
             </Link> 
-            <Link href="/Instruction">
+            <Link href="/instructions">
               <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Instruction</li>
             </Link>
-            <Link href="/">
+            <Link href='/exam'>
               <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Exam</li>
             </Link>
             <Link href="/">
