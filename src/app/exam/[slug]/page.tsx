@@ -3,9 +3,11 @@ import Image from "next/image";
 
 export default function ExamUi({ params }: { params: { slug: string } }) {
   const totalQuestions = 100;
-  const questionNumbers = Array.from({ length: totalQuestions }, (_, i) => i + 1);
+  const questionNumbers = Array.from(
+    { length: totalQuestions },
+    (_, i) => i + 1
+  );
   return (
-    
     <>
       <NavBar />
 
@@ -75,7 +77,7 @@ export default function ExamUi({ params }: { params: { slug: string } }) {
           </div>
           <div className="flex justify-between align-center border-t-2 border-black pt-4 m-3 mt-5 gap-5">
             <button className="transition ease-in-out delay-75 bg-green-400 hover:-translate-y-1 hover:scale-80 hover:bg-green-500 duration-300 text-white font-bold py-2 px-4 rounded">
-              Save & Next 
+              Save & Next
             </button>
             <button className="transition ease-in-out delay-75 bg-white hover:-translate-y-1 hover:scale-80 hover:bg-red-600  duration-300 text-black hover:text-white font-bold py-2 px-4 border-2 rounded">
               Clear
@@ -106,23 +108,33 @@ export default function ExamUi({ params }: { params: { slug: string } }) {
         <div className="pt-5 p-5 w-2/5 justify-end border-2 border-black rounded-lg shadow-sm">
           <div className="mb-4">
             <div className="flex items-center mb-2">
-              <span className="inline-block w-8 h-8 bg-gray-200 rounded-full text-center leading-8 mr-2">74</span>
+              <span className="inline-block w-8 h-8 bg-gray-200 rounded-full text-center leading-8 mr-2">
+                74
+              </span>
               Not Visited
             </div>
             <div className="flex items-center mb-2">
-              <span className="inline-block w-8 h-8 bg-orange-200 rounded-full text-center leading-8 mr-2">1</span>
+              <span className="inline-block w-8 h-8 bg-orange-200 rounded-full text-center leading-8 mr-2">
+                1
+              </span>
               Not Answered
             </div>
             <div className="flex items-center mb-2">
-              <span className="inline-block w-8 h-8 bg-green-200 rounded-full text-center leading-8 mr-2">0</span>
+              <span className="inline-block w-8 h-8 bg-green-200 rounded-full text-center leading-8 mr-2">
+                0
+              </span>
               Answered
             </div>
             <div className="flex items-center mb-2">
-              <span className="inline-block w-8 h-8 bg-purple-200 rounded-full text-center leading-8 mr-2">0</span>
+              <span className="inline-block w-8 h-8 bg-purple-200 rounded-full text-center leading-8 mr-2">
+                0
+              </span>
               Marked for Review
             </div>
             <div className="flex items-center">
-              <span className="inline-block w-8 h-8 bg-indigo-200 rounded-full text-center leading-8 mr-2">0</span>
+              <span className="inline-block w-8 h-8 bg-indigo-200 rounded-full text-center leading-8 mr-2">
+                0
+              </span>
               Answered & Marked for Review
               <br />
               (will be considered for evaluation)
@@ -140,8 +152,6 @@ export default function ExamUi({ params }: { params: { slug: string } }) {
             ))}
           </div>
         </div>
-
-              
       </div>
     </>
   );

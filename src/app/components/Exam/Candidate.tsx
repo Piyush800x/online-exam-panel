@@ -23,12 +23,12 @@ export default function Candidate() {
     const [candidate, SetCandidate] = useState<any>('')
 
     return (
-        <div className="flex flex-row justify-between px-10">
-            <div className="flex flex-row justify-between items-center">
-                <div className="border border-black">
-                    <Image src="/image/Exam/candidate.jpg" alt="Candidate Image" width={50} height={50}/>
+        <div className="flex flex-row justify-between px-10 pb-2 mt-2 border-b-2">
+            <div className="flex flex-row justify-between items-center gap-4">
+                <div className="">
+                    <Image src="/image/Exam/default_user.png" alt="Candidate Image" width={95} height={95}/>
                 </div>
-                <div className="flex flex-col items-start">
+                <div className="flex flex-col items-start font-medium">
                     <div><h2>Candidate Name: {candidate.name}</h2></div>
                     <div><h2>Exam Name: {candidate.exam}</h2></div>
                     <div><h2>Subject Name: {candidate.subject}</h2></div>
