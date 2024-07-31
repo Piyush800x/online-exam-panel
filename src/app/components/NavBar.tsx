@@ -33,7 +33,7 @@ export default function NavBar() {
             <Link href="/instructions">
               <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Instruction</li>
             </Link>
-            <Link href='/exam'>
+            <Link href='/exam/page'>
               <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Exam</li>
             </Link>
             <Link href="/results">

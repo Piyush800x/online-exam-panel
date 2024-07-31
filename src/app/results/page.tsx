@@ -15,7 +15,7 @@ const MockTestResult = () => {
       <NavBar />
       <Candidate />
       <div className="p-4 border-black border-2">
-        <div className="font-bold text-center text-7xl">
+        <div className="font-bold text-center text-5xl">
           SCORE CARD
         </div>
         <div className="text-start mb-4 text-red-500">
