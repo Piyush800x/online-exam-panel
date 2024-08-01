@@ -61,13 +61,7 @@ export default function ExamBoard() {
           <h1 className="mt-4 font-bold">
             Question {currentQuestionIndex + 1}
           </h1>
-          <Image
-            src={questions[currentQuestionIndex].imageUrl}
-            alt={`Question ${currentQuestionIndex + 1}`}
-            width={240}
-            height={120}
-            className=""
-          />
+
           <RadioGroup
             value={selectedOption}
             onValueChange={handleOptionChange}
@@ -84,6 +78,10 @@ export default function ExamBoard() {
             <div className="flex items-center space-x-2">
               <RadioGroupItem value={"Option3"} id={"r3"} />
               <Label htmlFor={"r3"}>{"Option3"}</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value={"Option4"} id={"r4"} />
+              <Label htmlFor={"r4"}>{"Option4"}</Label>
             </div>
           </RadioGroup>
         </div>
@@ -142,36 +140,6 @@ export default function ExamBoard() {
             <div className="font-bold text-blue-600">{0}</div>
             <div>Answered & Marked for Review</div>
           </div>
-
-          {/* old */}
-          {/* <div className="flex flex-row">
-            <div className="gap-4">
-              <div className="flex flex-row gap-x-2">
-                <div className="font-bold">{74}</div>
-                <div>Not Visited</div>
-              </div>
-              <div className="flex flex-row gap-x-2">
-                <div className="font-bold text-red-600">{1}</div>
-                <div>Not Answered</div>
-              </div>
-            </div>
-            <div className="gap-x-2">
-              <div className="flex flex-row gap-x-2">
-                <div className="font-bold text-green-600">{0}</div>
-                <div>Answered</div>
-              </div>
-              <div className="flex flex-row gap-x-2">
-                <div className="font-bold text-purple-700">{0}</div>
-                <div>Marked for Review</div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="flex flex-row gap-x-2">
-              <div className="font-bold text-blue-600">{0}</div>
-              <div>Answered & Marked for Review</div>
-            </div>
-          </div> */}
         </div>
         {/* ANSWER COUNT */}
         <div>
