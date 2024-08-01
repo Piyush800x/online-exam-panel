@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button } from './button';
 
 const QuestionUpload: React.FC = () => {
+  const [examText, setExamText] = useState('');
   const [questionText, setQuestionText] = useState('');
   const [options, setOptions] = useState(['', '', '', '']);
 
@@ -13,10 +14,42 @@ const QuestionUpload: React.FC = () => {
     setOptions(newOptions);
   };
 
+  const handleSubmit = async () => {
+    const submit = {
+      question: questionText,
+      options: options,
+      examName: examText
+    }
+    try {
+      const response = await fetch('/api/setquestion', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Metadata': JSON.stringify(submit),
+        }
+      });
+      alert(`Insert Success! InsertID${response}`);
+    }
+    catch (error) {
+      console.error(error)
+    }
+  }
   return (
     <div className="bg-slate-100 p-6 rounded-lg shadow-lg max-w-md mx-auto">
         <h1 className='text-xl text-center font-bold mb-4'>Upload Question</h1>
       <form>
+        <div className="mb-4">
+          <label className="block  mb-2" htmlFor="examText">
+            Exam Name
+          </label>
+          <input
+            type="text"
+            id="examText"
+            className="w-full bg-slate-200 p-4 rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
+            value={examText}
+            onChange={(e) => setExamText(e.target.value)}
+          />
+        </div>
         <div className="mb-4">
           <label className="block  mb-2" htmlFor="questionText">
             Question Text
@@ -46,7 +79,7 @@ const QuestionUpload: React.FC = () => {
           ))}
         </div>
         <div className="flex justify-between mt-4 gap-4 font-semibold">
-          <Button type="submit" className="bg-slate-200 p-4 rounded hover:bg-green-400 text-black">
+          <Button onClick={handleSubmit} type="submit" className="bg-slate-200 p-4 rounded hover:bg-green-400 text-black">
             SAVE & NEXT
           </Button>
           <Button type="button" className="bg-slate-200 p-4 rounded hover:bg-slate-300 text-black">

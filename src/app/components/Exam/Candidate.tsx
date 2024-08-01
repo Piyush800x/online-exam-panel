@@ -6,22 +6,15 @@ import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuGroup,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuPortal,
-    DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
 
 export default function Candidate() {
+    const {user} = useKindeBrowserClient();
     const [candidate, SetCandidate] = useState<any>('')
-
+    console.log(user);
     return (
         <div className="flex flex-row justify-between px-10 pb-2 mt-2 border-b-2">
             <div className="flex flex-row justify-between items-center gap-4">
@@ -29,7 +22,7 @@ export default function Candidate() {
                     <Image src="/image/Exam/default_user.png" alt="Candidate Image" width={95} height={95}/>
                 </div>
                 <div className="flex flex-col items-start font-medium">
-                    <div><h2>Candidate Name: {candidate.name}</h2></div>
+                    <div><h2>Candidate Name: {user?.given_name} {user?.family_name}</h2></div>
                     <div><h2>Exam Name: {candidate.exam}</h2></div>
                     <div><h2>Subject Name: {candidate.subject}</h2></div>
                     <div><h2>Remaining Time: </h2></div>
