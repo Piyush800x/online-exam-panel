@@ -12,7 +12,7 @@ type Question = {
   examName: string;
 };
 
-export default function ExamBoard() {
+export default function ExamBoard({ examname }: { examname: string }) {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [selectedOption, setSelectedOption] = useState<any>(null);
@@ -21,11 +21,29 @@ export default function ExamBoard() {
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const response = await fetch("/api/getquestions", { method: "GET" });
-      const data: Question[] = await response.json();
-      setQuestions(data);
-      //   setQuestionsMarked(Array.from({length: questions.length}, (_, i) => i + 1))
-    };
+      console.log(`Examname: ${examname}`)
+      try {
+        const response = await fetch("/api/getquestions", { method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+            'Metadata': examname,
+        },
+        body: examname
+        });
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data.questions);
+          setQuestions(data.questions);
+        }
+        else {
+          console.error(`Error fetching details`)
+        }
+        //   setQuestionsMarked(Array.from({length: questions.length}, (_, i) => i + 1))
+      }
+      catch (error) {
+        console.error(error);
+      };
+      }
 
     fetchQuestions();
   }, []);
@@ -54,7 +72,7 @@ export default function ExamBoard() {
     if (selectedOption !== null) {
       const questionKey = `question_${currentQuestionIndex + 1}`;
       localStorage.setItem(questionKey, selectedOption); // Save selected option to localStorage
-      setAnsweredQuestions((prev) => [...new Set([...prev, currentQuestionIndex + 1])]);
+      setAnsweredQuestions((prev) => Array.from(new Set([...prev, currentQuestionIndex + 1])));
     }
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -70,16 +88,19 @@ export default function ExamBoard() {
   };
 
   if (questions.length === 0) {
-    return <div>Loading...</div>;
+    return <div className="flex flex-col items-center justify-center">
+      <Image src={`/image/Exam/Duck.gif`} unoptimized={true} alt="Loading" width={300} height={300}/>
+      <h1 className="text-2xl">Loading...</h1>
+    </div>;
   }
 
   return (
-    <div className="px-10 flex flex-row">
+    <div className="px-28 flex flex-row justify-between">
       <div className="">
         {/* EXAM */}
         <div>
           <h1 className="mt-4 font-bold">
-            Question {currentQuestionIndex + 1}. {questions[currentQuestionIndex].question}
+            Q{currentQuestionIndex + 1}. {questions[currentQuestionIndex].question}
           </h1>
 
           <RadioGroup
@@ -89,28 +110,12 @@ export default function ExamBoard() {
           >
             {
               questions.map((obj, index) => (
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2" key={index}>
                   <RadioGroupItem value={obj.answers[index]} id={`${index}`} />
                   <Label htmlFor={`r${index}`}>{obj.answers[index]}</Label>
                 </div>
               ))
             }
-            {/* <div className="flex items-center space-x-2">
-              <RadioGroupItem value={"Option1"} id={"r1"} />
-              <Label htmlFor={"r1"}>{"Option1"}</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={"Option2"} id={"r2"} />
-              <Label htmlFor={"r2"}>{"Option2"}</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={"Option3"} id={"r3"} />
-              <Label htmlFor={"r3"}>{"Option3"}</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={"Option4"} id={"r4"} />
-              <Label htmlFor={"r4"}>{"Option4"}</Label>
-            </div> */}
           </RadioGroup>
         </div>
         {/* SUBMIT */}
