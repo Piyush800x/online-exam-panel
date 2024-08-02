@@ -3,10 +3,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai'; 
-
-
+import {RegisterLink, LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
+import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
 
 export default function NavBar() {
+  const {isAuthenticated} = useKindeBrowserClient();
+
   const [navOpen, setNavOpen] = useState(false);
   const toggleNav = () => {
     setNavOpen(!navOpen);
@@ -33,15 +35,18 @@ export default function NavBar() {
             <Link href="/instructions">
               <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Instruction</li>
             </Link>
-            <Link href='/exam/page'>
+            <Link href='/exam/jee'>
               <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Exam</li>
             </Link>
             <Link href="/results">
               <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Results</li>
             </Link>
-            <Link href="/">
-              <li className='ml-4 text-Grite-200 hover:text-white text-xl'></li>
-            </Link>
+            <div className={
+              isAuthenticated ? "hidden" : "flex"
+            }>
+              <RegisterLink className='ml-4 text-Grite-200 hover:text-white text-xl'>Register</RegisterLink>
+              <LoginLink className='ml-4 text-Grite-200 hover:text-white text-xl'>Login</LoginLink>
+            </div>
           </ul>
         </div>
         <div onClick={toggleNav} className='sm:hidden cursor-pointer pl-24'>
@@ -53,7 +58,6 @@ export default function NavBar() {
         ? "fixed sm: hidden left-0 top-0 w-[65%] h-screen bg-gradient-to-r from-Grite-600 to-Grite-300 p-10 ease-in duration-500" 
         : "fixed left[-100%] top-0 p-10 ease-in duration-500"
       }>
-
       </div>
     </nav>
   );
