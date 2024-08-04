@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai'; 
-import {RegisterLink, LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
+import {RegisterLink, LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
 
 export default function NavBar() {
@@ -33,14 +33,22 @@ export default function NavBar() {
               <li className='text-Grite-200 hover:text-white text-xl'>Home</li>
             </Link> 
             <Link href="/instructions">
-              <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Instruction</li>
+              <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Instructions</li>
+            </Link> 
+            <Link href="/institution/dashboard">
+              <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Institute</li>
             </Link>
             <Link href='/exam/jee'>
               <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Exam</li>
             </Link>
-            <Link href="/results">
+            {/* <Link href="/results">
               <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Results</li>
-            </Link>
+            </Link> */}
+            <div className={
+              !isAuthenticated ? "hidden" : "flex"
+            }>
+              <LogoutLink className='ml-4 text-Grite-200 hover:text-white text-xl'>Logout</LogoutLink>
+            </div>
             <div className={
               isAuthenticated ? "hidden" : "flex"
             }>
