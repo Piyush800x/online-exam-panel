@@ -8,10 +8,7 @@ export default function Home() {
     <>
       <NavBar />
       <main className="flex flex-col">
-        {/* <h1>Welcome to the Home Page</h1> */}
-        <Candidate />
-        <QuestionUpload />
-        <ExamBoard />
+        <h1 className="items-center text-center text-4xl">Welcome to the Home Page</h1>
       </main>
     </>
   );

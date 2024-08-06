@@ -1,10 +1,16 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Button } from './button';
+import { Button } from "@/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const QuestionUpload: React.FC = () => {
-  const [examText, setExamText] = useState('');
+  const [examText, setExamText] = useState('jee');
   const [questionText, setQuestionText] = useState('');
   const [options, setOptions] = useState(['', '', '', '']);
 
@@ -39,16 +45,16 @@ const QuestionUpload: React.FC = () => {
         <h1 className='text-xl text-center font-bold mb-4'>Upload Question</h1>
       <form>
         <div className="mb-4">
-          <label className="block  mb-2" htmlFor="examText">
-            Exam Name
-          </label>
-          <input
-            type="text"
-            id="examText"
-            className="w-full bg-slate-200 p-4 rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
-            value={examText}
-            onChange={(e) => setExamText(e.target.value)}
-          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button value="outline">Exam Name</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem defaultValue={'JEE'}>JEE</DropdownMenuItem>
+              <DropdownMenuItem defaultValue={'NEET'}>NEET</DropdownMenuItem>
+              <DropdownMenuItem defaultValue={'CAT'}>CAT</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <div className="mb-4">
           <label className="block  mb-2" htmlFor="questionText">

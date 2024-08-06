@@ -10,6 +10,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
+import Timer from "@/components/Timer";
 
 export default function Candidate() {
     const {user} = useKindeBrowserClient();
@@ -23,9 +24,9 @@ export default function Candidate() {
                 </div>
                 <div className="flex flex-col items-start font-medium">
                     <div><h2>Candidate Name: {user?.given_name} {user?.family_name}</h2></div>
-                    <div><h2>Exam Name: {candidate.exam}</h2></div>
-                    <div><h2>Subject Name: {candidate.subject}</h2></div>
-                    <div><h2>Remaining Time: </h2></div>
+                    {/* <div><h2>Exam Name: {candidate.exam}</h2></div> */}
+                    <div><h2>Exam Name: JEE</h2></div>
+                    <div><h2>Remaining Time: {<Timer/>} </h2></div>
                 </div>
             </div>
             <div className="pt-6">
