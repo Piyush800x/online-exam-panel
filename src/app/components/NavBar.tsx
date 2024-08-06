@@ -18,14 +18,15 @@ export default function NavBar() {
     <nav className="bg-gradient-to-r from-Grite-600 to-Grite-300 h-300 flex px-5 py-1 text-white">
       <div className="flex justify-between items-center h-full w-full m-4 px-4 2xl:px-16">
         <Link href="/">
-          <Image
+          {/* <Image
             src="/ntalogo1.png"
             alt="Logo"
             width={200}
             height={75}
             className="cursor-pointer rounded-lg shadow-xl bg-opacity-50"
             priority
-          />
+          /> */}
+          <h1 className='text-2xl font-bold'>Online Exam</h1>
         </Link>
         <div className='m-3 hidden sm:flex'>
           <ul className='flex'>

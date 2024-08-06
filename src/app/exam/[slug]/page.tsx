@@ -15,7 +15,7 @@ export default function ExamUi({params}: {params: {examname: string}}) {
     return (
       <main className="flex flex-col  justify-center">
         <NavBar/>
-        <h1 className="items-center text-center text-4xl">Please Register or Login to start exam.</h1>
+        <h1 className="items-center text-center text-4xl mt-4 font-semibold">Register or Login to start exam.</h1>
       </main>
     )
   }
@@ -26,7 +26,7 @@ export default function ExamUi({params}: {params: {examname: string}}) {
       <main className="flex flex-col">
         <NavBar/>
         <div className="flex flex-col items-center my-10">
-          <label htmlFor="exam" className="text-3xl">Start Exam</label>
+          <label htmlFor="exam" className="text-3xl font-semibold mb-2">Click &quot;Start&quot; to start the exam</label>
           <Button className="text-xl " onClick={() => setExam(true)}>Start</Button>
         </div>
       </main>

@@ -9,9 +9,9 @@ export default function Dashboard() {
 
   if (!isAuthenticated) {
     return (
-      <main className="flex flex-col  justify-center">
+      <main className="flex flex-col justify-center">
         <NavBar/>
-        <h1 className="items-center text-center text-4xl">Please Register or Login to Upload Question.</h1>
+        <h1 className="items-center text-center text-4xl mt-4 font-semibold">Please Register or Login to Upload Questions.</h1>
       </main>
     )
   }

@@ -165,7 +165,7 @@ export default function ExamBoard({ examname }: { examname: string }) {
         {/* INSTRUCTION TYPE */}
         <div className="border-2 border-black border-dotted px-5 py-5 mt-4 grid grid-cols-2">
           <div className="flex flex-row gap-x-2">
-            <div className="font-bold">{100 - answeredQuestions.length}</div>
+            <div className="font-bold">{questions.length - answeredQuestions.length}</div>
             <div>Not Visited</div>
           </div>
 
