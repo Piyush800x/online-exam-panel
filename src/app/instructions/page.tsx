@@ -6,20 +6,10 @@ export default function Instructions() {
     <div className="min-h-screen bg-gray-100">
       <NavBar />
       <div>
-        {/* <img 
-          src="/ntalogo10.png"
-          alt="General Instructions"
-          className="w-full h-20 object-cover"
-        /> */}
       </div>
       <div className="max-w-4xl mx-auto p-8 bg-white shadow-md mt-6 rounded-lg">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center space-x-4">
-            {/* <img
-              src="/ntalogo1.png"
-              alt=" Logo"
-              className=" rounded-lg shadow-xl bg-opacity-50"
-            /> */}
           </div>
         </div>
         <h1 className="text-2xl font-bold text-center mb-4">
@@ -31,7 +21,7 @@ export default function Instructions() {
         <div className="text-left">
           <h3 className="text-lg font-bold">General Instructions:</h3>
           <ol className="list-decimal list-inside ml-4">
-            <li>Total duration of AIAPGT - Homeopathy is 90 min.</li>
+            <li>Total duration of the exam is 90 min.</li>
             <li>
               The clock will be set at the server. The countdown timer in the
               top right corner of the screen will display the remaining time
