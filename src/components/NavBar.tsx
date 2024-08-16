@@ -17,6 +17,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
+import { UserRoundPlus, LogIn, LogOut } from 'lucide-react';
 
 export default function NavBar() {
   const {isAuthenticated} = useKindeBrowserClient();
@@ -27,32 +28,34 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-Grite-600 to-Grite-300 h-300 flex px-5 py-1 text-white">
-      <div className="flex justify-between items-center h-full w-full m-4 px-4 2xl:px-16">
+    <nav className="sticky top-0 bg-zinc-700 h-200 border-b flex items-center text-white">
+      <div className="flex justify-between items-center h-full w-full px-4 py-2 2xl:px-16">
         <Link href="/">
-          <h1 className='text-3xl font-normal'>Online Exam</h1>
+          <h1 className='text-2xl font-semibold'>ExamFile<span className="text-lg">.com</span></h1>
         </Link>
-        <div className='m-3 hidden sm:flex content-center'>
-          <ul className='flex items-center'>
-            <Link href="/">
-              <li className='text-Grite-200 hover:text-white text-xl'>Home</li>
-            </Link> 
-            <Link href="/instructions">
-              <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Instructions</li>
-            </Link> 
-            <Link href="/institution/dashboard">
-              <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Institute</li>
-            </Link>
-            <Link href='/exam/jee'>
-              <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Exam</li>
-            </Link>
+        <div className="flex gap-2 items-center">
+          <Link href="/" className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg'>
+            Home
+          </Link> 
+          <Link href="/instructions" className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg'>
+            Instructions
+          </Link> 
+          <Link href="/institution" className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg'>
+            Institute
+          </Link>
+          <Link href='/exam/jee' className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg'>
+            Exam
+          </Link>
+        </div>
+        <div className='m-3 flex justify-between'>
+          <ul className='flex items-center gap-2'>
             {/* <Link href="/results">
               <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Results</li>
             </Link> */}
             <div className={
               !isAuthenticated ? "hidden" : "flex"
             }>
-              <LogoutLink className='ml-4 text-Grite-200 hover:text-white text-xl'>Logout</LogoutLink>
+              <LogoutLink className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg flex gap-1 items-center'><LogOut className="size-5"/>Logout</LogoutLink>
             </div>
             {/* <div className={
               isAuthenticated ? "hidden" : "flex"
@@ -65,7 +68,7 @@ export default function NavBar() {
             }>
               <Drawer>
                   <DrawerTrigger asChild>
-                    <button className='ml-4 text-Grite-200 hover:text-white text-xl'>Register</button>
+                    <button className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg flex gap-1 items-center'><UserRoundPlus className="size-5"/>Register</button>
                   </DrawerTrigger>
                   <DrawerContent className='flex flex-col items-center'>
                     <DrawerTitle className='my-4 text-2xl'>Register as</DrawerTitle>
@@ -88,7 +91,7 @@ export default function NavBar() {
             }>
               <Drawer>
                   <DrawerTrigger asChild>
-                    <button className='ml-4 text-Grite-200 hover:text-white text-xl'>Login</button>
+                    <button className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg flex gap-1 items-center'><LogIn className="size-5"/>Login</button>
                   </DrawerTrigger>
                   <DrawerContent className='flex flex-col items-center'>
                     <DrawerTitle className='my-4 text-2xl'>Login as</DrawerTitle>

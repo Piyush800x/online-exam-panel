@@ -1,7 +1,7 @@
 'use client';
-import Candidate from "@/app/components/Exam/Candidate";
-import ExamBoard from "@/app/components/Exam/ExamBoard";
-import NavBar from "@/app/components/NavBar";
+import NavBar from "@/components/NavBar";
+import Candidate from "@/components/Candidate";
+import ExamBoard from "@/components/ExamBoard";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useState } from "react";
