@@ -1,6 +1,6 @@
 import React from 'react';
-import NavBar from '../components/NavBar';
-import Candidate from '../components/Exam/Candidate';
+import NavBar from '@/components/NavBar';
+import Candidate from '@/components/Candidate';
 
 const MockTestResult = () => {
   const questions = Array.from({ length: 100 }, (_, i) => ({

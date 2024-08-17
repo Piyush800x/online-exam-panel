@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoClientPromise from "@/lib/mongodb";
 import { MongoClient, Db } from "mongodb";
 
+// OK
 export async function GET(req: NextRequest, res: NextResponse) {
     const client: MongoClient = await mongoClientPromise;
     const db: Db = client.db("OnlineExam");
@@ -24,6 +25,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     }
 }
 
+// Ok
 export async function POST(req: NextRequest, res: NextResponse) {
     const client: MongoClient = await mongoClientPromise;
     const db: Db = client.db("OnlineExam");

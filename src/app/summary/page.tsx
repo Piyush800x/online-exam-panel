@@ -1,5 +1,5 @@
-import Candidate from '../components/Exam/Candidate';
-import NavBar from '../components/NavBar';
+import NavBar from '@/components/NavBar';
+import Candidate from '@/components/Candidate';
 
 import React from 'react';
 

@@ -6,12 +6,13 @@ import Link from "next/link";
 import QuestionUpload from "@/components/ui/QuestionUpload";
 import { useKindeBrowserClient, useKindeAuth } from "@kinde-oss/kinde-auth-nextjs";
 import AddInstitue from "@/components/AddInstitute";
+import AddQuestions from "@/components/AddQuestions";
+import EditQuestion from "@/components/EditQuestion";
+import SearchBar from "@/components/SearchBar";
 
 export default function Home() {
   const { isAuthenticated, user, permissions } = useKindeBrowserClient();
   // const { user } = useKindeAuth();
-  console.log(user)
-  console.log(permissions)
 
   if (!isAuthenticated) {
     return (
@@ -37,16 +38,20 @@ export default function Home() {
   return (
     <>
       <NavBar />
-      <AddInstitue/>
+      {/* <AddInstitue/> */}
+      <AddQuestions/>
+      {/* <EditQuestion/> */}
+      {/* <SearchBar/> */}
       <main className="flex flex-col p-4 justify-items-center items-center">
         {/* <h1 className="items-center text-center text-4xl mb-4">
           Welcome, {<span className="font-semibold">{user?.given_name}</span>}!
         </h1> */}
         {/* {returnUser()} */}
-        <h3>To start exam, click on "Continue"</h3>
+        
+        {/* <h3>To start exam, click on "Continue"</h3>
         <Link href={"/instructions"}>
           <button className="py-2 px-4 bg-blue-600 rounded-md text-white mt-2">Continue</button>
-        </Link>
+        </Link> */}
       </main>
     </>
   );
