@@ -20,6 +20,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { Toaster, toast } from 'sonner'
+import { ObjectId } from "mongodb";
 
 export default function AddQuestions(){
     const [question, setQuestion] = useState({
@@ -28,7 +29,7 @@ export default function AddQuestions(){
         optionTwo: "",
         optionThree: "",
         optionFour: "",
-        answer: ""
+        answer: "",
     });
     const {isAuthenticated, user} = useKindeBrowserClient();
     const [examName, setExamName] = useState<string | null>(null);
@@ -45,6 +46,10 @@ export default function AddQuestions(){
     //         </div>
     //     )
     // }
+
+    const handleAddDone = async () => {
+        localStorage.removeItem("examName");
+    };
 
     const handleSubmit = async () => {
         const sendData = {...question, examName: examName, instituteCode: institutionCode}
@@ -67,7 +72,7 @@ export default function AddQuestions(){
                     optionTwo: "",
                     optionThree: "",
                     optionFour: "",
-                    answer: "Option 1"
+                    answer: "Option 1",
                 });
             }
             else {
@@ -113,7 +118,7 @@ export default function AddQuestions(){
     return (
         <div className="flex justify-center">
             <Toaster/>
-            <Card className="w-2/5">
+            <Card className="w-2/5 h-full">
                 <CardHeader>
                     <CardTitle>Add Questions</CardTitle>
                     <CardDescription>Add the question and the options here.</CardDescription>
@@ -165,6 +170,7 @@ export default function AddQuestions(){
                 <CardFooter className="flex justify-between">
                     <Button variant="outline">Cancel</Button>
                     <Button onClick={() => handleSubmit()}>Save and next</Button>
+                    <Button onClick={() => handleAddDone()}>Finish Adding</Button>
                 </CardFooter>
             </Card>
         </div>

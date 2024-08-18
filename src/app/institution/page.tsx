@@ -3,6 +3,7 @@ import AddInstitute from "@/components/AddInstitute";
 import AddQuestions from "@/components/AddQuestions";
 import NavBar from "@/components/NavBar";
 import SearchBar from "@/components/SearchBar";
+import {SidebarMain} from "@/components/SidebarMain";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { useEffect, useState } from "react";
 
@@ -62,7 +63,7 @@ export default function InstitutePage() {
     }, [isAuthenticated]);
 
     return (
-        <main>
+        <main className="w-full h-screen overflow-y-hidden">
             <NavBar />
             {loading ? (
                 <div>
@@ -73,10 +74,11 @@ export default function InstitutePage() {
                     <AddInstitute/>
                 </div>
             ) : (
-                <div className="flex flex-col w-full ">
+                <div className="flex flex-col h-dvh">
+                    <SidebarMain/>
                     {/* <SearchBar/> */}
-                    <AddQuestions/>
-                    {`Institute: ${isInstitute}`}
+                    {/* <AddQuestions/>
+                    {`Institute: ${isInstitute}`} */}
                 </div>
             )}
         </main>

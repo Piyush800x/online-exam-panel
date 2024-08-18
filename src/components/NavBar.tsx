@@ -28,7 +28,7 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="sticky top-0 bg-zinc-700 h-200 border-b flex items-center text-white">
+    <nav className="sticky top-0 bg-zinc-700 h-200 border-b flex items-center text-white z-50">
       <div className="flex justify-between items-center h-full w-full px-4 py-2 2xl:px-16">
         <Link href="/">
           <h1 className='text-2xl font-semibold'>ExamFile<span className="text-lg">.com</span></h1>

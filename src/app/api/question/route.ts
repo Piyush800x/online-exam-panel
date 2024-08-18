@@ -2,6 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoClientPromise from "@/lib/mongodb";
 import { MongoClient, Db, ObjectId } from "mongodb";
 
+export async function GET(req: NextRequest, res: NextResponse) {
+    const client: MongoClient = await mongoClientPromise;
+    const db: Db = client.db("OnlineExam");
+
+    const data = await JSON.parse(req.headers.get('Metadata') || '{}');
+    console.log(`API: ${JSON.stringify(data)}`);
+    try {
+        const questions = await db.collection('questions').find({instituteCode: data.institutionCode}).toArray();
+        console.log(`RES: ${questions}`)
+        return NextResponse.json({data: questions, success: true}, {status: 200});
+    }   
+    catch (error) {
+        return NextResponse.json({success: false}, {status: 404});
+    }
+}
 
 // Ok
 export async function POST(req: NextRequest, res: NextResponse) {
@@ -30,28 +45,39 @@ export async function PUT(req: NextRequest, res: NextResponse) {
     const client: MongoClient = await mongoClientPromise;
     const db: Db = client.db("OnlineExam");
 
-    const data = await JSON.parse(req.headers.get('Metadata') || '{}');
-    const editedData = await req.json();
+    const metadata = JSON.parse(req.headers.get('Metadata') || '{}');
+    console.log(`API: ${JSON.stringify(metadata)}`);
 
-    const { _id, ...updateData } = editedData;
-    const id = {_id: data}
-    console.log(`data: ${id}`)
-    console.log(`editedData: ${editedData.description}`);
+    const { institutionCode, examName, prevQuestionTitle } = metadata;
+    const editedData = await req.json();
+    console.log(`API: ${JSON.stringify(editedData)}`);
 
     try {
         const updatedResult = await db.collection('questions').updateOne(
-            {'_id': new ObjectId(data)},
-            {$set: updateData}
-        )
-        console.log(`updatedResult: ${updatedResult}`)
+            {
+                instituteCode: institutionCode,
+                examName: examName,
+                'questions.questionTitle': prevQuestionTitle
+            },
+            {
+                $set: {
+                    'questions.$.questionTitle': editedData.questionTitle,
+                    'questions.$.optionOne': editedData.optionOne,
+                    'questions.$.optionTwo': editedData.optionTwo,
+                    'questions.$.optionThree': editedData.optionThree,
+                    'questions.$.optionFour': editedData.optionFour,
+                    'questions.$.answer': editedData.answer
+                }
+            }
+        );
+
         if (updatedResult.matchedCount === 0) {
             return NextResponse.json({ success: false, message: 'Question not found' }, { status: 404 });
         }
 
         return NextResponse.json({ success: true }, { status: 200 });
-    }
-    catch (error) {
-        console.error(error)
-        return NextResponse.json({ success: false }, { status: 400 });
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({ success: false, error: error }, { status: 500 });
     }
 }
