@@ -71,11 +71,13 @@ export default function EditQuestion(){
         catch (error) {
             console.error("Can't make API Call");
         }
+        finally {
+            setLoading(false);
+        }
     }
 
-    const handleSubmit = async () => {
+    const handleEdit = async () => {
         if (selectedExam && selectedQuestion) {
-            const prevQuestionTitle = selectedQuestion.questionTitle; // Store the previous question title
             const instiCode = localStorage.getItem('instituteCode');
             const metadata = {
                 institutionCode: instiCode,
@@ -105,9 +107,38 @@ export default function EditQuestion(){
         }
     }
 
+    const handleDelete = async () => {
+        if (selectedExam && selectedQuestion) {
+            const instiCode = localStorage.getItem('instituteCode');
+            const metadata = {
+                instituteCode: instiCode,
+                examName: selectedExam.examName,
+                questionTitle: questionTitle
+            };
+    
+            try {
+                const res = await fetch('/api/question', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(metadata)
+                });
+    
+                const data = await res.json();
+                if (data.success) {
+                    toast.success("Question Removed Successfully!");
+                } else {
+                    toast.error("Failed to remove the question.");
+                }
+            } catch (error) {
+                toast.error("API call failed.");
+            }
+        }
+    }
+
     useEffect (() => {  
         fetchQuestions();
-        setLoading(false);
     }, [isAuthenticated])
 
     if (loading) {
@@ -232,7 +263,10 @@ export default function EditQuestion(){
                 </CardContent>
                 <CardFooter className="flex justify-between">
                     <Button variant="outline">Cancel</Button>
-                    <Button onClick={() => handleSubmit()}>Submit</Button>
+                    <div className="flex gap-x-5">
+                        <Button className="w-20" onClick={() => handleEdit()}>Edit</Button>
+                        <Button onClick={() => handleDelete()}>Remove</Button>
+                    </div>
                 </CardFooter>
             </Card>
         </div>

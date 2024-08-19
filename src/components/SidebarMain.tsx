@@ -34,14 +34,6 @@ export function SidebarMain() {
             ),
             component: "EditQuestion",
         },
-        {
-            label: "Remove Product",
-            href: "#",
-            icon: (
-                <TrashIcon className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-            ),
-            component: "DeleteProduct",
-        },
     ];
 
     const renderComponent = () => {
@@ -50,8 +42,6 @@ export function SidebarMain() {
                 return <AddQuestions />;
             case "EditQuestion":
                 return <EditQuestion/>
-            case "DeleteProduct":
-                // return <DeleteProduct/>
             default:
                 return <AddQuestions />;
         }
