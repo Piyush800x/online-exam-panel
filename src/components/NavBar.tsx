@@ -18,6 +18,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { UserRoundPlus, LogIn, LogOut } from 'lucide-react';
+import Searchbar from './SearchBar';
 
 export default function NavBar() {
   const {isAuthenticated} = useKindeBrowserClient();
@@ -28,11 +29,14 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="sticky top-0 bg-zinc-700 h-200 border-b flex items-center text-white z-50">
+    <nav className="sticky top-0 bg-zinc-700 max-h-200 border-b flex items-center text-white z-50">
       <div className="flex justify-between items-center h-full w-full px-4 py-2 2xl:px-16">
         <Link href="/">
           <h1 className='text-2xl font-semibold'>ExamFile<span className="text-lg">.com</span></h1>
         </Link>
+        <div className='text-black w-1/5'>
+          <Searchbar/>
+        </div>
         <div className="flex gap-2 items-center">
           <Link href="/" className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg'>
             Home
@@ -43,26 +47,14 @@ export default function NavBar() {
           <Link href="/institution" className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg'>
             Institute
           </Link>
-          <Link href='/exam/jee' className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg'>
-            Exam
-          </Link>
         </div>
         <div className='m-3 flex justify-between'>
           <ul className='flex items-center gap-2'>
-            {/* <Link href="/results">
-              <li className='ml-4 text-Grite-200 hover:text-white text-xl'>Results</li>
-            </Link> */}
             <div className={
               !isAuthenticated ? "hidden" : "flex"
             }>
               <LogoutLink className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg flex gap-1 items-center'><LogOut className="size-5"/>Logout</LogoutLink>
             </div>
-            {/* <div className={
-              isAuthenticated ? "hidden" : "flex"
-            }>
-              <RegisterLink className='ml-4 text-Grite-200 hover:text-white text-xl'>Register</RegisterLink>
-              <LoginLink className='ml-4 text-Grite-200 hover:text-white text-xl'>Login</LoginLink>
-            </div> */}
             <div className={
               isAuthenticated ? "hidden" : "flex"
             }>

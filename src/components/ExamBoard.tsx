@@ -5,49 +5,31 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
-type Question = {
+interface Questions {
+  questionTitle: string;
+  optionOne: string;
+  optionTwo: string;
+  optionThree: string;
+  optionFour: string;
+  answer: string;
+}
+
+interface Data {
   id: number;
-  question: string;
-  answers: string[];
+  instituteCode: string;
   examName: string;
+  questions: Questions[];
 };
 
-export default function ExamBoard({ examname }: { examname: string }) {
-  const [questions, setQuestions] = useState<Question[]>([]);
+export default function ExamBoard({ questionsFull, examName, instituteCode }: { questionsFull: Questions[], examName: string, instituteCode: string }) {
+  // const [questions, setQuestions] = useState<Questions[]>([]);
+  const questions: Questions[] = questionsFull;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [selectedOption, setSelectedOption] = useState<any>(null);
   const questionsMarked = Array.from({ length: questions.length }, (_, i) => i + 1);
   const [answeredQuestions, setAnsweredQuestions] = useState<any[]>([]);
 
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      console.log(`Examname: ${examname}`)
-      try {
-        const response = await fetch("/api/getquestions", { method: "POST",
-          headers: {
-            'Content-Type': 'application/json',
-            'Metadata': examname,
-        },
-        body: examname
-        });
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data.questions);
-          setQuestions(data.questions);
-        }
-        else {
-          console.error(`Error fetching details`)
-        }
-        //   setQuestionsMarked(Array.from({length: questions.length}, (_, i) => i + 1))
-      }
-      catch (error) {
-        console.error(error);
-      };
-      }
-
-    fetchQuestions();
-  }, []);
-
+  console.log(JSON.stringify(`OBJ : ${questions}`));
   const handleOptionChange = (value: string) => {
     setSelectedOption(value);
   };
@@ -59,31 +41,75 @@ export default function ExamBoard({ examname }: { examname: string }) {
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setSelectedOption(null); // Clear selected option when changing question
+      loadSavedAnswer(currentQuestionIndex + 1); // Clear selected option when changing question
     }
   };
 
   const handleJumpQuestion = (number: any) => {
     setCurrentQuestionIndex(number - 1);
-    setSelectedOption(null); // Clear selected option when changing question
+    loadSavedAnswer(number - 1); // Clear selected option when changing question
   }
 
   const handleSaveNext = () => {
     if (selectedOption !== null) {
-      const questionKey = `question_${currentQuestionIndex + 1}`;
-      localStorage.setItem(questionKey, selectedOption); // Save selected option to localStorage
+      const examData = JSON.parse(localStorage.getItem(examName) || '{}');
+      
+      if (!examData.answers) {
+        examData.answers = [];
+      }
+
+      if (!examData.examName) {
+        examData.examname = examName;
+      }
+
+      if (!examData.instituteCode) {
+        examData.instituteCode = instituteCode;
+      }
+
+      const existingAnswerIndex = examData.answers.findIndex(
+        (answer: any, index: number) => index === currentQuestionIndex
+      );
+
+      const questionData = {
+        questionTitle: questions[currentQuestionIndex].questionTitle,
+        answer: selectedOption,
+      };
+
+      if (existingAnswerIndex !== -1) {
+        examData.answers[existingAnswerIndex] = questionData;
+      } else {
+        examData.answers.push(questionData);
+      }
+
+      localStorage.setItem(examName, JSON.stringify(examData)); // Save the entire exam data to localStorage
       setAnsweredQuestions((prev) => Array.from(new Set([...prev, currentQuestionIndex + 1])));
     }
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setSelectedOption(null); // Clear selected option when changing question
+      loadSavedAnswer(currentQuestionIndex + 1); // Clear selected option when changing question
     }
   }
 
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
-      setSelectedOption(null); // Clear selected option when changing question
+      loadSavedAnswer(currentQuestionIndex - 1);
+    }
+  };
+
+  const loadSavedAnswer = (questionIndex: number) => {
+    const savedExamData = JSON.parse(localStorage.getItem(examName) || '{}');
+    if (savedExamData.answers) {
+      const savedAnswer = savedExamData.answers.find(
+        (answer: any, index: number) => index === questionIndex
+      );
+      if (savedAnswer) {
+        setSelectedOption(savedAnswer.answer);
+      } else {
+        setSelectedOption(null); // Clear the selected option if there's no saved answer
+      }
+    } else {
+      setSelectedOption(null); // Clear the selected option if there's no saved answer
     }
   };
 
@@ -100,7 +126,7 @@ export default function ExamBoard({ examname }: { examname: string }) {
         {/* EXAM */}
         <div>
           <h1 className="mt-4 font-bold">
-            Q{currentQuestionIndex + 1}. {questions[currentQuestionIndex].question}
+            Q{currentQuestionIndex + 1}. {questions[currentQuestionIndex].questionTitle}
           </h1>
 
           <RadioGroup
@@ -108,14 +134,44 @@ export default function ExamBoard({ examname }: { examname: string }) {
             onValueChange={handleOptionChange}
             className="my-4"
           >
-            {
-              questions.map((obj, index) => (
-                <div className="flex items-center space-x-2" key={index}>
-                  <RadioGroupItem value={obj.answers[index]} id={`${index}`} />
-                  <Label htmlFor={`r${index}`}>{obj.answers[index]}</Label>
-                </div>
-              ))
-            }
+            <div className="flex flex-col gap-y-2">
+              <div className="flex items-center space-x-2">
+                  <RadioGroupItem
+                    value={questions[currentQuestionIndex].optionOne}
+                    id={`optionOne_${currentQuestionIndex}`}
+                  />
+                  <Label htmlFor={`optionOne_${currentQuestionIndex}`}>
+                    {questions[currentQuestionIndex].optionOne}
+                  </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem
+                  value={questions[currentQuestionIndex].optionTwo}
+                  id={`optionTwo_${currentQuestionIndex}`}
+                />
+                <Label htmlFor={`optionTwo_${currentQuestionIndex}`}>
+                  {questions[currentQuestionIndex].optionTwo}
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem
+                  value={questions[currentQuestionIndex].optionThree}
+                  id={`optionThree_${currentQuestionIndex}`}
+                />
+                <Label htmlFor={`optionThree_${currentQuestionIndex}`}>
+                  {questions[currentQuestionIndex].optionThree}
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem
+                  value={questions[currentQuestionIndex].optionFour}
+                  id={`optionFour_${currentQuestionIndex}`}
+                />
+                <Label htmlFor={`optionFour_${currentQuestionIndex}`}>
+                  {questions[currentQuestionIndex].optionFour}
+                </Label>
+              </div>
+            </div>
           </RadioGroup>
         </div>
         {/* SUBMIT */}
@@ -159,6 +215,9 @@ export default function ExamBoard({ examname }: { examname: string }) {
               MARK FOR REVIEW & NEXT
             </Button>
           </div>
+        </div>
+        <div className="flex justify-center w-full gap-x-3 pb-2 pt-2">
+          <Button>Submit</Button>
         </div>
       </div>
       <div className="ml-24">
