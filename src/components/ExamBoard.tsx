@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { Toaster, toast } from 'sonner'
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { useRouter } from "next/navigation";
 
 interface Questions {
   questionTitle: string;
@@ -23,7 +24,7 @@ interface Data {
   questions: Questions[];
 };
 
-export default function ExamBoard({ questionsFull, examName, instituteCode }: { questionsFull: Questions[], examName: string, instituteCode: string }) {
+export default function ExamBoard({ questionsFull, examName, instituteCode, examDuration }: { questionsFull: Questions[], examName: string, instituteCode: string, examDuration: string }) {
   // const [questions, setQuestions] = useState<Questions[]>([]);
   const questions: Questions[] = questionsFull;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -32,6 +33,9 @@ export default function ExamBoard({ questionsFull, examName, instituteCode }: { 
   const [answeredQuestions, setAnsweredQuestions] = useState<any[]>([]);
   const {user} = useKindeBrowserClient();
   const [btnState, setBtnState] = useState(false);
+  const [timeLeft, setTimeLeft] = useState<number>(Number(examDuration) * 60);
+  const [markedForReview, setMarkedForReview] = useState<number[]>([]);
+  const router = useRouter();
 
   console.log(JSON.stringify(`OBJ : ${questions}`));
   const handleOptionChange = (value: string) => {
@@ -39,25 +43,22 @@ export default function ExamBoard({ questionsFull, examName, instituteCode }: { 
   };
 
   const handleClear = () => {
-    // Retrieve the current exam data from localStorage
     const examData = JSON.parse(localStorage.getItem(examName) || '{}');
 
     if (examData.answers) {
-      // Find the index of the current question in the answers array
       const existingAnswerIndex = examData.answers.findIndex(
         (answer: any, index: number) => index === currentQuestionIndex
       );
 
       if (existingAnswerIndex !== -1) {
-        // Remove the answer for the current question
         examData.answers.splice(existingAnswerIndex, 1);
-
-        // Update localStorage with the modified data
         localStorage.setItem(examName, JSON.stringify(examData));
       }
     }
-    toast.success("Answer cleared successfully!")
-    // setSelectedOption(null); // Clear selected option
+
+    // Clear the selected option
+    setSelectedOption(null);
+    toast.success("Answer cleared successfully!");
   };
 
   const handleNext = () => {
@@ -72,7 +73,7 @@ export default function ExamBoard({ questionsFull, examName, instituteCode }: { 
     loadSavedAnswer(number - 1); // Clear selected option when changing question
   }
 
-  const handleSaveNext = () => {
+  const handleSaveNext = (markForReview: boolean = false) => {
     if (selectedOption !== null) {
       const examData = JSON.parse(localStorage.getItem(examName) || '{}');
       
@@ -95,6 +96,7 @@ export default function ExamBoard({ questionsFull, examName, instituteCode }: { 
       const questionData = {
         questionTitle: questions[currentQuestionIndex].questionTitle,
         answer: selectedOption,
+        markedForReview: markForReview // Add this field to mark for review
       };
 
       if (existingAnswerIndex !== -1) {
@@ -105,10 +107,10 @@ export default function ExamBoard({ questionsFull, examName, instituteCode }: { 
 
       localStorage.setItem(examName, JSON.stringify(examData)); // Save the entire exam data to localStorage
       setAnsweredQuestions((prev) => Array.from(new Set([...prev, currentQuestionIndex + 1])));
-    }
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      loadSavedAnswer(currentQuestionIndex + 1); // Clear selected option when changing question
+
+      if (markForReview) {
+        setMarkedForReview((prev) => Array.from(new Set([...prev, currentQuestionIndex + 1])));
+      }
     }
     toast.success("Answer saved successfully!")
   }
@@ -118,6 +120,11 @@ export default function ExamBoard({ questionsFull, examName, instituteCode }: { 
       setCurrentQuestionIndex(currentQuestionIndex - 1);
       loadSavedAnswer(currentQuestionIndex - 1);
     }
+  };
+
+  const handleMarkForReviewNext = () => {
+    setMarkedForReview((prev) => Array.from(new Set([...prev, currentQuestionIndex + 1])));
+    toast.success("Marked for Review");
   };
 
   const loadSavedAnswer = (questionIndex: number) => {
@@ -159,6 +166,15 @@ export default function ExamBoard({ questionsFull, examName, instituteCode }: { 
       const data = await res.json();
       if (data.success) {
           toast.success(`Answers Successfully Submitted!`);
+          localStorage.setItem('markedForReview', `${markedForReview.filter(q => !answeredQuestions.includes(q)).length}`);
+          localStorage.setItem('notVisited', `${questions.length - answeredQuestions.length}`);
+          localStorage.setItem('notAnswered', `${questions.length - answeredQuestions.length}`);
+          localStorage.setItem('answered', `${answeredQuestions.length}`);
+          localStorage.setItem('answeredAndMarkedForReview', `${markedForReview.filter(q => answeredQuestions.includes(q)).length}`)
+          localStorage.setItem('examName', examName);
+          localStorage.setItem('initCode', instituteCode);
+          localStorage.removeItem(`${examName}`);
+          router.push('/summary');
       }
       else {
           toast.error("Can't Save!");
@@ -172,6 +188,20 @@ export default function ExamBoard({ questionsFull, examName, instituteCode }: { 
     }
   }
 
+  useEffect(() => {
+    if (timeLeft > 0) {
+      const timerId = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 1000);
+
+      // Clear interval on component unmount
+      return () => clearInterval(timerId);
+    } else {
+      handleSubmit(); // Automatically submit when time reaches zero
+    }
+  }, [timeLeft]);
+
+
   if (questions.length === 0) {
     return <div className="flex flex-col items-center justify-center">
       <Image src={`/image/Exam/Duck.gif`} unoptimized={true} alt="Loading" width={300} height={300}/>
@@ -182,7 +212,7 @@ export default function ExamBoard({ questionsFull, examName, instituteCode }: { 
   return (
     <div>
       <Toaster/>
-      <div className="px-28 flex flex-row justify-between">
+      <div className="px-28 w-full flex flex-row items-center justify-between">
         <div className="">
           {/* EXAM */}
           <div>
@@ -194,6 +224,7 @@ export default function ExamBoard({ questionsFull, examName, instituteCode }: { 
               value={selectedOption}
               onValueChange={handleOptionChange}
               className="my-4"
+              required
             >
               <div className="flex flex-col gap-y-2">
                 <div className="flex items-center space-x-2">
@@ -247,33 +278,32 @@ export default function ExamBoard({ questionsFull, examName, instituteCode }: { 
               <Button
                 onClick={handleNext}
                 className="bg-green-600 hover:bg-green-500"
+                disabled={currentQuestionIndex === questions.length - 1}
               >
                 NEXT
               </Button>
             </div>
             <div className="flex flex-row gap-x-3">
               <Button
-                onClick={handleSaveNext}
+                onClick={() => handleSaveNext()}
                 className="bg-green-600 hover:bg-green-500"
               >
-                SAVE & NEXT
+                SAVE
               </Button>
               <Button onClick={handleClear} className="bg-red-600 hover:bg-red-500">
                 CLEAR
               </Button>
               <Button
-                onClick={handleSaveNext}
-                disabled={currentQuestionIndex === questions.length - 1}
+                onClick={() => handleSaveNext(true)}
                 className="bg-blue-600 hover:bg-blue-500"
               >
                 SAVE & MARK FOR REVIEW
               </Button>
               <Button
-                onClick={handleNext}
-                disabled={currentQuestionIndex === questions.length - 1}
+                onClick={handleMarkForReviewNext}
                 className="bg-purple-600 hover:bg-purple-500"
               >
-                MARK FOR REVIEW & NEXT
+                MARK FOR REVIEW
               </Button>
             </div>
           </div>
@@ -281,7 +311,7 @@ export default function ExamBoard({ questionsFull, examName, instituteCode }: { 
             <Button disabled={btnState} onClick={() => handleSubmit()} className="w-full bg-slate-100 hover:bg-slate-200 text-slate-900 border">Submit</Button>
           </div>
         </div>
-        <div className="ml-24">
+        <div className="ml-24 w-1/3">
           {/* INSTRUCTION TYPE */}
           <div className="border-2 border-black border-dotted px-5 py-5 mt-4 grid grid-cols-2">
             <div className="flex flex-row gap-x-2">
@@ -300,27 +330,30 @@ export default function ExamBoard({ questionsFull, examName, instituteCode }: { 
             </div>
 
             <div className="flex flex-row gap-x-2">
-              <div className="font-bold text-purple-700">{0}</div>
+              <div className="font-bold text-purple-700">{markedForReview.filter(q => !answeredQuestions.includes(q)).length}</div>
               <div>Marked for Review</div>
             </div>
-
             <div className="flex flex-row gap-x-2">
-              <div className="font-bold text-blue-600">{0}</div>
+              <div className="font-bold text-blue-600">{markedForReview.filter(q => answeredQuestions.includes(q)).length}</div>
               <div>Answered & Marked for Review</div>
             </div>
           </div>
           {/* ANSWER COUNT */}
           <div>
-            <div className="grid grid-cols-10 gap-2 p-4">
+            <div className="grid grid-cols-10 gap-12 p-4">
               {questionsMarked.map((seat) => (
                 <button
                   key={seat}
-                  className={`flex items-center justify-center w-10 h-10 border rounded ${
-                    answeredQuestions.includes(seat)
-                      ? "bg-green-500 text-white"
-                      : seat === currentQuestionIndex + 1
-                      ? "bg-orange-500 text-white"
-                      : "bg-gray-100"
+                  className={`flex items-center justify-center w-max px-4 py-4 h-10 border rounded ${
+                    markedForReview.includes(seat) && answeredQuestions.includes(seat)
+                    ? "bg-blue-500 text-white"  // Answered & Marked for Review
+                    : markedForReview.includes(seat)
+                    ? "bg-purple-500 text-white"  // Marked for Review
+                    : answeredQuestions.includes(seat)
+                    ? "bg-green-500 text-white"   // Answered
+                    : seat === currentQuestionIndex + 1
+                    ? "bg-orange-500 text-white"  // Current question
+                    : "bg-gray-100"
                   }`}
                     onClick={() => {
                       handleJumpQuestion(seat)

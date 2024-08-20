@@ -22,7 +22,8 @@ export default function ExamUi({params}: {params: {id: string}}) {
   const [loading, setLoading] = useState(true);
   const [questions, setQuestions] = useState<Questions[]>([])
   const [examName, setExamName] = useState<string>('');
-  const [instituteCode, setInstituteCode] = useState<string>('')
+  const [instituteCode, setInstituteCode] = useState<string>('');
+  const [examDuration, setExamDuration] = useState<string>('');
 
   const fetchQuestions = async () => {
     const sendData = {
@@ -43,6 +44,7 @@ export default function ExamUi({params}: {params: {id: string}}) {
         setQuestions(data.data[0].questions)
         setExamName(data.data[0].examName)
         setInstituteCode(data.data[0].instituteCode)
+        setExamDuration(data.data[0].questions[0].examDuration)
       }
     }
     catch (error) {
@@ -83,8 +85,8 @@ export default function ExamUi({params}: {params: {id: string}}) {
   return (
     <main>
       <NavBar/>
-      <Candidate/>
-      <ExamBoard questionsFull={questions} examName={examName} instituteCode={instituteCode}/>
+      <Candidate time={examDuration} instituteCode={instituteCode} examName={examName}/>
+      <ExamBoard questionsFull={questions} examName={examName} instituteCode={instituteCode} examDuration={examDuration}/>
       <div>
 
       </div>

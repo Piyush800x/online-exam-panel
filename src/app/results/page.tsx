@@ -13,7 +13,7 @@ const MockTestResult = () => {
   return (
     <div>
       <NavBar />
-      <Candidate />
+      {/* <Candidate /> */}
       <div className="p-4 border-black border-2">
         <div className="font-bold text-center text-5xl">
           SCORE CARD

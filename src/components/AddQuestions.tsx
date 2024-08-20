@@ -35,24 +35,14 @@ export default function AddQuestions(){
     const [examName, setExamName] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [institutionCode, setInstituteCode] = useState<string | null>(null);
-
-    // const val = localStorage.getItem('examName');
-    
-    // if (val === null) {
-    //     setExamName(null)
-    //     return (
-    //         <div>
-    //             <AddExamName/>
-    //         </div>
-    //     )
-    // }
+    const [examDuration, setExamDuration] = useState<string | null>(null);
 
     const handleAddDone = async () => {
         localStorage.removeItem("examName");
     };
 
     const handleSubmit = async () => {
-        const sendData = {...question, examName: examName, instituteCode: institutionCode}
+        const sendData = {...question, examName: examName, instituteCode: institutionCode, examDuration: examDuration};
         console.log(JSON.stringify(question));
 
         try {
@@ -100,6 +90,14 @@ export default function AddQuestions(){
             }
             else {
                 setInstituteCode(code);
+            }
+
+            const duration = localStorage.getItem('examDuration');
+            if (duration === null) {
+                setExamDuration(null)
+            }
+            else {
+                setExamDuration(duration);
             }
         }
         setLoading(false);
@@ -179,10 +177,21 @@ export default function AddQuestions(){
 
 export function AddExamName() {
     const [examName, setExamName] = useState<string | null>(null);
+    const [examDuration, setExamDuration] = useState<string | null>(null);
+    const [hour, setHour] = useState<number>(0);
+    const [minute, setMinute] = useState<number>(0);
 
     const handleSubmit = () => {
         localStorage.setItem('examName', `${examName}`);
+        
+        const duration = (hour * 60) + minute;
+        console.log(`Duration: ${duration}`);
+        setExamDuration(`${duration}`);
+
+        localStorage.setItem(`examDuration`, `${duration}`);
+        toast.success(`${examName} successfully added!`)
     }
+
 
     return (
         <>
@@ -191,7 +200,14 @@ export function AddExamName() {
                 <div className="flex flex-col w-2/5 space-y-1.5">
                     <Label htmlFor="name">Exam Name</Label>
                     <Input type="text" onChange={(e) => setExamName(e.target.value)} placeholder="Enter exam name" />
-                    <Button onClick={() => handleSubmit()}>Submit</Button>
+
+                    <Label htmlFor="duration">Exam Duration</Label>
+                    <div className="flex gap-2">
+                        <Input type="number" required onChange={(e) => setHour(Number(e.target.value))} placeholder="Enter hours" />
+                        <Input type="number" onChange={(e) => setMinute(Number(e.target.value))} placeholder="Enter minutes" />
+                    </div>
+
+                    <Button onClick={() => handleSubmit()}>Save</Button>
                 </div>
             </div>
         </>

@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-const Timer: React.FC = () => {
-  const calculateTimeLeft = () => {
+interface TimeLeft {
+  hours: number;
+  minutes: number;
+  seconds: number;
+};
+
+export default function Timer({ time }: { time: string }) {
+  const calculateTimeLeft = (): TimeLeft => {
     const difference = endTime - new Date().getTime();
-    let timeLeft = {};
+    let timeLeft: TimeLeft = { hours: 0, minutes: 0, seconds: 0 };
 
     if (difference > 0) {
       timeLeft = {
@@ -16,8 +22,8 @@ const Timer: React.FC = () => {
     return timeLeft;
   };
 
-  const [endTime] = useState(new Date().getTime() + 3 * 60 * 60 * 1000);
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [endTime] = useState(new Date().getTime() + Number(time) * 60 * 1000);
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -32,16 +38,14 @@ const Timer: React.FC = () => {
   Object.keys(timeLeft).forEach((interval) => {
     timerComponents.push(
       <span key={interval}>
-        {timeLeft[interval]} {interval}{" "}
+        {timeLeft[interval as keyof TimeLeft]} {interval}{" "}
       </span>
     );
   });
 
   return (
-    <div>
+    <div className="bg-orange-100 text-orange-700 px-2 py-1 rounded-lg cursor-not-allowed">
       {timerComponents.length ? timerComponents : <span>Time's up!</span>}
     </div>
   );
 }
-
-export default Timer;
