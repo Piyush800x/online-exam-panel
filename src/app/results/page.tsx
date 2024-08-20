@@ -1,6 +1,6 @@
 import React from 'react';
-import NavBar from '../components/NavBar';
-import Candidate from '../components/Exam/Candidate';
+import NavBar from '@/components/NavBar';
+import Candidate from '@/components/Candidate';
 
 const MockTestResult = () => {
   const questions = Array.from({ length: 100 }, (_, i) => ({
@@ -13,7 +13,7 @@ const MockTestResult = () => {
   return (
     <div>
       <NavBar />
-      <Candidate />
+      {/* <Candidate /> */}
       <div className="p-4 border-black border-2">
         <div className="font-bold text-center text-5xl">
           SCORE CARD

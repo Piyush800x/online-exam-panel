@@ -12,7 +12,7 @@ import {
 import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
 import Timer from "@/components/Timer";
 
-export default function Candidate() {
+export default function Candidate({time, examName, instituteCode}: {time: string, examName: string, instituteCode: string}) {
     const {user} = useKindeBrowserClient();
     const [candidate, SetCandidate] = useState<any>('')
     console.log(user);
@@ -25,8 +25,9 @@ export default function Candidate() {
                 <div className="flex flex-col items-start font-medium">
                     <div><h2>Candidate Name: {user?.given_name} {user?.family_name}</h2></div>
                     {/* <div><h2>Exam Name: {candidate.exam}</h2></div> */}
-                    <div><h2>Exam Name: JEE</h2></div>
-                    <div><h2>Remaining Time: {<Timer/>} </h2></div>
+                    <div><h2>Exam Name: {examName}</h2></div>
+                    <div><h2>Institute Code: {instituteCode}</h2></div>
+                    <div><h2>Remaining Time: {<Timer time={time}/>} </h2></div>
                 </div>
             </div>
             <div className="pt-6">
