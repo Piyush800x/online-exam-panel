@@ -37,7 +37,6 @@ export default function ExamBoard({ questionsFull, examName, instituteCode, exam
   const [markedForReview, setMarkedForReview] = useState<number[]>([]);
   const router = useRouter();
 
-  console.log(JSON.stringify(`OBJ : ${questions}`));
   const handleOptionChange = (value: string) => {
     setSelectedOption(value);
   };

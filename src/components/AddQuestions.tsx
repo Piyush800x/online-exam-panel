@@ -36,13 +36,14 @@ export default function AddQuestions(){
     const [loading, setLoading] = useState<boolean>(true);
     const [institutionCode, setInstituteCode] = useState<string | null>(null);
     const [examDuration, setExamDuration] = useState<string | null>(null);
+    const [questionMark, setQuestionMark] = useState<string | null>(null);
 
     const handleAddDone = async () => {
         localStorage.removeItem("examName");
     };
 
     const handleSubmit = async () => {
-        const sendData = {...question, examName: examName, instituteCode: institutionCode, examDuration: examDuration};
+        const sendData = {...question, examName: examName, instituteCode: institutionCode, examDuration: examDuration, questionMark: questionMark};
         console.log(JSON.stringify(question));
 
         try {
@@ -62,7 +63,7 @@ export default function AddQuestions(){
                     optionTwo: "",
                     optionThree: "",
                     optionFour: "",
-                    answer: "Option 1",
+                    answer: "optionOne",
                 });
             }
             else {
@@ -98,6 +99,13 @@ export default function AddQuestions(){
             }
             else {
                 setExamDuration(duration);
+            }
+            const marks = localStorage.getItem('questionMark');
+            if (marks === null) {
+                setQuestionMark(null)
+            }
+            else {
+                setQuestionMark(marks);
             }
         }
         setLoading(false);
@@ -178,6 +186,7 @@ export default function AddQuestions(){
 export function AddExamName() {
     const [examName, setExamName] = useState<string | null>(null);
     const [examDuration, setExamDuration] = useState<string | null>(null);
+    const [questionMark, setQuestionMark] = useState<string | null>(null);
     const [hour, setHour] = useState<number>(0);
     const [minute, setMinute] = useState<number>(0);
 
@@ -189,6 +198,7 @@ export function AddExamName() {
         setExamDuration(`${duration}`);
 
         localStorage.setItem(`examDuration`, `${duration}`);
+        localStorage.setItem(`questionMark`, `${questionMark}`);
         toast.success(`${examName} successfully added!`)
     }
 
@@ -206,7 +216,8 @@ export function AddExamName() {
                         <Input type="number" required onChange={(e) => setHour(Number(e.target.value))} placeholder="Enter hours" />
                         <Input type="number" onChange={(e) => setMinute(Number(e.target.value))} placeholder="Enter minutes" />
                     </div>
-
+                    <Label htmlFor="name">Per question marks: </Label>
+                    <Input type="text" onChange={(e) => setQuestionMark(e.target.value)} placeholder="Enter question marks" />
                     <Button onClick={() => handleSubmit()}>Save</Button>
                 </div>
             </div>
