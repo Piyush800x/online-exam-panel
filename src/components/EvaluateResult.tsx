@@ -74,13 +74,13 @@ export default function EvaluateResult() {
             if (data.success) {
                 // toast.success(`${questionTitle} Successfully Updated!`);
                 setFormData(data.data);
-                console.log(JSON.stringify(data.data));
+                // console.log(JSON.stringify(data.data));
 
                 const exams: string[] = [];
                 data.data.map((item: Data) => (
                     exams.push(item.examName)
                 ))
-                console.log(`Exams: ${exams}`);
+                // console.log(`Exams: ${exams}`);
                 setExamNames(exams);
             }
             else {
@@ -113,7 +113,7 @@ export default function EvaluateResult() {
             const data = await res.json();
             if (data.success) {
                 setStudents(data.data);
-                console.log(`Students: ${data.data}`)
+                // console.log(`Students: ${data.data}`)
                 toast.success(`Students fetched successfully!`)
             } else {
                 toast.error("Failed to fetch students");
@@ -182,7 +182,7 @@ export default function EvaluateResult() {
             const data = await res.json();
             if (data.success) {
                 toast.success(`${candidateFirstName}'s result published successfully!`);
-                console.log(JSON.stringify(data.data));
+                // console.log(JSON.stringify(data.data));
             }
             else {
                 toast.error("Can't Publish!");

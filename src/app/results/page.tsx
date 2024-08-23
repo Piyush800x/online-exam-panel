@@ -2,12 +2,13 @@
 import { TailSpin } from 'react-loader-spinner';
 import React, { useEffect, useState } from 'react';
 import NavBar from '@/components/NavBar';
-import Candidate from '@/components/Candidate';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { Button } from "@/components/ui/button"
 import Image from 'next/image';
+import { ObjectId } from 'mongodb';
 
-interface Result {
+interface Results {
+  _id: ObjectId,
   instituteCode: string,
   examName: string,
   candidateAuthId:string,
@@ -22,36 +23,42 @@ interface Result {
 
 const MockTestResult = () => {
   const {user, isAuthenticated} = useKindeBrowserClient();
-  const [result, setResult] = useState<Result | null>(null);
+  const [results, setResult] = useState<Results[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchResult = async () => {
-    const sendData = {
-      candidateAuthId: user?.id
-    }
-    try {
-        const res = await fetch('/api/getresult', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(sendData)
-        });
-        const data = await res.json();
-        if (data.success) {
-            setResult(data.data);
-            console.log(JSON.stringify(data.data));
+    if (isAuthenticated) {
+      const sendData = {
+        candidateAuthId: user?.id
+      }
+      try {
+          const res = await fetch('/api/getresult', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(sendData)
+          });
+          const data = await res.json();
+          if (data.success) {
+              setResult(data.data);
+              // console.log(JSON.stringify(data.data));
+            }
+          else {
+              // toast.error("Can't fetch!");
           }
-        else {
-            // toast.error("Can't fetch!");
-        }
+      }
+      catch (error) {
+        console.error("Can't make API Call");
+      }
+      finally {
+        setLoading(false);
+      }
     }
-    catch (error) {
-      console.error("Can't make API Call");
-    }
-    finally {
+    else {
       setLoading(false);
     }
+    
   }
 
 
@@ -59,9 +66,6 @@ const MockTestResult = () => {
     if (isAuthenticated) {
       fetchResult();
     } 
-    else {
-      setLoading(false)
-    }
   }, [isAuthenticated]);
 
   return (
@@ -101,20 +105,22 @@ const MockTestResult = () => {
           </div>
           <div className="flex flex-col border rounded-md py-2 px-4 w-max">
             <h1 className="text-xl font-semibold">Candidate details:</h1>
-            <p>Name: {result?.candidateFirstName} {result?.candidateLastName}</p>
-            <p>Email: {result?.candidateEmail}</p>
-            <p>Exam: {result?.examName}</p>
-            <p>Institute code: {result?.instituteCode}</p>
+            <p>Name: {results[0].candidateFirstName} {results[0].candidateLastName}</p>
+            <p>Email: {results[0].candidateEmail}</p>
           </div>
-          <div className="mb-4 border w-full rounded-md py-4">
-            <div className="flex flex-row justify-around w-full">
-              <div>Total Questions: <span className="font-bold">{result?.questionLength}</span></div>
-              <div>Total Attempted: <span className="font-bold">{parseInt(`${result?.correct}`) + parseInt(`${result?.wrong}`)}</span></div>
-              <div>Correct Answers: <span className="font-bold">{result?.correct}</span></div>
-              <div>Incorrect Answers: <span className="font-bold">{result?.wrong}</span></div>
-              <div>Score: <span className="font-bold">{result?.marks}</span></div>
+          {results.map((result) => (
+            <div className="mb-4 border w-full rounded-md py-4" key={`${result._id}`}>
+              <div className="flex flex-row justify-around w-full">
+                <p>Exam: {result?.examName}</p>
+                <p>Institute code: {result?.instituteCode}</p>
+                <div>Total Questions: <span className="font-bold">{result?.questionLength}</span></div>
+                <div>Total Attempted: <span className="font-bold">{parseInt(`${result?.correct}`) + parseInt(`${result?.wrong}`)}</span></div>
+                <div>Correct Answers: <span className="font-bold">{result?.correct}</span></div>
+                <div>Incorrect Answers: <span className="font-bold">{result?.wrong}</span></div>
+                <div>Score: <span className="font-bold">{result?.marks}</span></div>
+              </div>
             </div>
-          </div>
+          ))}
           <p>For future reference, please take a screenshot or print it.</p>
           <Button 
             onClick={window.print}

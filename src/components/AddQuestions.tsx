@@ -46,7 +46,7 @@ export default function AddQuestions(){
 
     const handleSubmit = async () => {
         const sendData = {...question, examName: examName, instituteCode: institutionCode, examDuration: examDuration, questionMark: questionMark, negativeMark: negativeMark};
-        console.log(JSON.stringify(question));
+        // console.log(JSON.stringify(question));
 
         try {
             const res = await fetch('/api/question', {
@@ -78,7 +78,7 @@ export default function AddQuestions(){
     }
 
     useEffect (() => {
-        console.log(`Auth: ${isAuthenticated}`);
+        // console.log(`Auth: ${isAuthenticated}`);
         if (isAuthenticated) {
             const val = localStorage.getItem('examName');
             if (val === null) {
@@ -215,7 +215,7 @@ export function AddExamName() {
         localStorage.setItem('examName', `${examName}`);
         
         const duration = (hour * 60) + minute;
-        console.log(`Duration: ${duration}`);
+        // console.log(`Duration: ${duration}`);
         setExamDuration(`${duration}`);
 
         localStorage.setItem(`examDuration`, `${duration}`);

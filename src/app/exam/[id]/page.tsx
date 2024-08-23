@@ -32,7 +32,6 @@ export default function ExamUi({params}: {params: {id: string}}) {
     const sendData = {
       id: params.id
     }
-    console.log(`sendData: ${JSON.stringify(sendData)}`);
     try {
       const res = await fetch(`/api/getquestions`, {
         method: "POST",
@@ -43,7 +42,6 @@ export default function ExamUi({params}: {params: {id: string}}) {
       });
       const data = await res.json();
       if (data.success) {
-        console.log(JSON.stringify(data.data[0].questions))
         setQuestions(data.data[0].questions)
         setExamName(data.data[0].examName)
         setInstituteCode(data.data[0].instituteCode)

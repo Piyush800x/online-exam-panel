@@ -46,7 +46,7 @@ export default function Instructions() {
                 </li>
                 <li>
                   <span className="inline-block w-4 h-4 bg-blue-500 border border-blue-700"></span>{" "}
-                  The question(s) "Answered and Marked for Review" will be
+                  The question(s) &quot;Answered and Marked for Review&quot; will be
                   considered for evaluation.
                 </li>
               </ol>

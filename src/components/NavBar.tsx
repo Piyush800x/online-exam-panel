@@ -37,7 +37,7 @@ export default function NavBar() {
         <div className='text-black w-1/5'>
           <Searchbar/>
         </div>
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-4 items-center">
           <Link href="/" className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg'>
             Home
           </Link>

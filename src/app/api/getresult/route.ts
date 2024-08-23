@@ -14,7 +14,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     }
 
     try {
-        const res = await db.collection('results').findOne(query);
+        const res = await db.collection('results').find(query).toArray();
         console.log(`API RES: ${JSON.stringify(res)}`);
         return NextResponse.json({data: res, success: true}, {status: 200});
     }
