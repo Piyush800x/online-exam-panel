@@ -50,7 +50,17 @@ Make sure you have the following installed on your local machine:
    ```bash
    git clone https://github.com/shibammitra24/online-exam-panel.git
    cd online-exam-panel
-1. **Run the server**:
+2. **Add environment variables**:
+
+   ```bash
+    MONGODB_URI= *PASTE HERE*
+    KINDE_CLIENT_ID= *PASTE HERE*
+    KINDE_CLIENT_SECRET= *PASTE HERE*
+    KINDE_ISSUER_URL= *PASTE HERE*
+    KINDE_SITE_URL= *PASTE HERE*
+    KINDE_POST_LOGOUT_REDIRECT_URL= *PASTE HERE*
+    KINDE_POST_LOGIN_REDIRECT_URL= *PASTE HERE*
+2. **Run the server**:
 
    ```bash
    npm run dev
