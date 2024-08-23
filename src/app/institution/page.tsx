@@ -1,4 +1,5 @@
 'use client';
+import { TailSpin } from 'react-loader-spinner';
 import AddInstitute from "@/components/AddInstitute";
 import AddQuestions from "@/components/AddQuestions";
 import NavBar from "@/components/NavBar";
@@ -6,6 +7,7 @@ import SearchBar from "@/components/SearchBar";
 import {SidebarMain} from "@/components/SidebarMain";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { useEffect, useState } from "react";
+import Image from 'next/image';
 
 export default function InstitutePage() {
     const { isAuthenticated, user } = useKindeBrowserClient();
@@ -60,25 +62,47 @@ export default function InstitutePage() {
         if (isAuthenticated) {
             verifyInstitute();
         }
+        else {
+            setLoading(false);
+        }
     }, [isAuthenticated]);
 
     return (
         <main className="w-full h-screen overflow-y-hidden">
             <NavBar />
             {loading ? (
-                <div>
-                    <h1>Loading...</h1>
-                </div>
-            ) :!isInstitute ?  (
+                <div className='h-dvh flex items-center justify-center'>
+                <TailSpin
+                    visible={true}
+                    height="80"
+                    width="80"
+                    color="#2A91EB"
+                    ariaLabel="tail-spin-loading"
+                    radius="1"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                />
+              </div>
+            ) : !isAuthenticated ?  (
+                  <div className='flex flex-col items-center justify-center text-center'>
+                      <div className=''>
+                        <Image 
+                          src={`/gifs/hello.gif`}
+                          alt='hello.gif'
+                          width={500}
+                          height={500}
+                          unoptimized
+                        />
+                      </div>
+                      <h1 className='font-medium text-3xl'>Please login to access this page.</h1>
+                  </div>
+                ) :!isInstitute ?  (
                 <div>
                     <AddInstitute/>
                 </div>
             ) : (
                 <div className="flex flex-col h-dvh">
                     <SidebarMain/>
-                    {/* <SearchBar/> */}
-                    {/* <AddQuestions/>
-                    {`Institute: ${isInstitute}`} */}
                 </div>
             )}
         </main>

@@ -47,6 +47,7 @@ export async function POST(req: NextRequest) {
                 correct++;
                 marks += Number(question.questionMark);
             } else {
+                marks -= Number(question.negativeMark);
                 wrong++;
             }
         }

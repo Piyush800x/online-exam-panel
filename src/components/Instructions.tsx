@@ -1,13 +1,6 @@
-import NavBar from "@/components/NavBar";
-import Link from "next/link";
-
 export default function Instructions() {
-  return (
-    <div className="min-h-screen bg-gray-100">
-      <NavBar />
-      <div>
-      </div>
-      <div className="max-w-4xl mx-auto p-8 bg-white shadow-md mt-6 rounded-lg">
+    return (
+        <div className="max-w-4xl mx-auto p-8 bg-white shadow-md mt-6 rounded-lg">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center space-x-4">
           </div>
@@ -78,16 +71,7 @@ export default function Instructions() {
               navigate to the top of the question area, without scrolling.
             </li>
           </ol>
-          <h3 className="text-center mb-2 font-semibold">By clicking on &quot;Continue&quot;, you are agreeing to the instructions mentioned above.</h3>
-        </div>
-        <div className="w-full flex justify-center">
-          <Link href={'/exam/jee'}>
-            <button className="border py-2 px-4 rounded-md bg-blue-600 text-white">
-              Continue
-            </button>
-          </Link>
         </div>
       </div>
-    </div>
-  );
+    )
 }

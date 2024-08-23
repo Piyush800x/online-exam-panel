@@ -42,6 +42,7 @@ interface StudentData {
     };
     examName: string;
     instituteCode: string;
+    candidateAuthId: string;
 }
 
 export default function EvaluateResult() {
@@ -53,6 +54,7 @@ export default function EvaluateResult() {
     const [students, setStudents] = useState<StudentData[]>([]);
     const [evaluationResult, setEvaluationResult] = useState<Record<string, { correct: number; wrong: number }>>({});
     const [marksResult, setMarksResult] = useState<Record<string, "">>({});
+    const [pubState, setPubState] = useState<boolean>(true);
 
     const fetchExams = async () => {
         const instiCode = localStorage.getItem('instituteCode');
@@ -143,7 +145,53 @@ export default function EvaluateResult() {
         } catch (error) {
             console.error("Error evaluating student:", error);
         }
+        finally {
+            setPubState(false)
+        }
     };
+
+    const publishData = async (
+        authId: string, 
+        correct: string, 
+        wrong: string, 
+        marks: string,
+        candidateFirstName: string, 
+        candidateLastName: string,
+        candidateEmail: string
+    ) => {
+        const sendData = {
+            instituteCode: localStorage.getItem('instituteCode'),
+            examName: selectedExam?.examName,
+            candidateAuthId: authId,
+            correct: correct,
+            wrong: wrong,
+            marks: marks,
+            candidateFirstName: candidateFirstName,
+            candidateLastName: candidateLastName,
+            candidateEmail: candidateEmail,
+            questionLength: selectedExam?.questions.length
+        }
+        try {
+            const res = await fetch('/api/publish', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(sendData)
+            });
+            const data = await res.json();
+            if (data.success) {
+                toast.success(`${candidateFirstName}'s result published successfully!`);
+                console.log(JSON.stringify(data.data));
+            }
+            else {
+                toast.error("Can't Publish!");
+            }
+        }
+        catch (error) {
+            console.error("Can't make API Call");
+        }
+    }
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -206,6 +254,17 @@ export default function EvaluateResult() {
                                                     </p>
                                             )}
                                             <Button onClick={() => evaluateStudent(student)}>Evaluate</Button>
+                                            <Button onClick={() =>
+                                                publishData(
+                                                    `${student.candidateAuthId}`,
+                                                    `${evaluationResult[`${student._id}`].correct}`,
+                                                    `${evaluationResult[`${student._id}`].wrong}`,
+                                                    `${marksResult[`${student._id}`]}`,
+                                                    `${student.candidateFirstName}`,
+                                                    `${student.candidateLastName}`,
+                                                    `${student.candidateEmail}`,
+                                                )}
+                                                disabled={pubState}>Publish</Button>
                                         </div>
                                     </div>
                                 </div>

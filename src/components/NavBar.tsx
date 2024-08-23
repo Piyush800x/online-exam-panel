@@ -40,12 +40,12 @@ export default function NavBar() {
         <div className="flex gap-2 items-center">
           <Link href="/" className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg'>
             Home
-          </Link> 
-          <Link href="/instructions" className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg'>
-            Instructions
-          </Link> 
+          </Link>
           <Link href="/institution" className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg'>
             Institute
+          </Link>
+          <Link href="/results" className='text-white hover:transition ease-in-out hover:bg-white hover:rounded-md p-1 hover:text-slate-900 text-lg'>
+            Results
           </Link>
         </div>
         <div className='m-3 flex justify-between'>

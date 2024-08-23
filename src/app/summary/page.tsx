@@ -1,4 +1,5 @@
 'use client';
+import { TailSpin } from 'react-loader-spinner';
 import NavBar from '@/components/NavBar';
 import Candidate from '@/components/Candidate';
 import React, { useEffect, useState } from 'react';
@@ -90,9 +91,18 @@ export default function ExamSummary() {
     <div className="text-center justify-center font-sans">
       <NavBar />
       {loading ? (
-        <div>
-          Loading...
-        </div>
+        <div className='h-dvh flex items-center justify-center'>
+        <TailSpin
+            visible={true}
+            height="80"
+            width="80"
+            color="#2A91EB"
+            ariaLabel="tail-spin-loading"
+            radius="1"
+            wrapperStyle={{}}
+            wrapperClass=""
+        />
+      </div>
       ) : (
         <div className="flex flex-col my-5 items-center">
           <div className="w-max p-4 mb-2 border rounded-md">

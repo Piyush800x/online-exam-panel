@@ -1,70 +1,129 @@
-import React from 'react';
+'use client';
+import { TailSpin } from 'react-loader-spinner';
+import React, { useEffect, useState } from 'react';
 import NavBar from '@/components/NavBar';
 import Candidate from '@/components/Candidate';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+import { Button } from "@/components/ui/button"
+import Image from 'next/image';
+
+interface Result {
+  instituteCode: string,
+  examName: string,
+  candidateAuthId:string,
+  correct: string,
+  wrong: string,
+  marks: string,
+  candidateFirstName: string,
+  candidateLastName: string,
+  candidateEmail: string,
+  questionLength: number
+}
 
 const MockTestResult = () => {
-  const questions = Array.from({ length: 100 }, (_, i) => ({
-    number: i + 1,
-    selectedOption: "---",
-    status: 'N/A',
-    correctOption: "---",
-  }));
+  const {user, isAuthenticated} = useKindeBrowserClient();
+  const [result, setResult] = useState<Result | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchResult = async () => {
+    const sendData = {
+      candidateAuthId: user?.id
+    }
+    try {
+        const res = await fetch('/api/getresult', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(sendData)
+        });
+        const data = await res.json();
+        if (data.success) {
+            setResult(data.data);
+            console.log(JSON.stringify(data.data));
+          }
+        else {
+            // toast.error("Can't fetch!");
+        }
+    }
+    catch (error) {
+      console.error("Can't make API Call");
+    }
+    finally {
+      setLoading(false);
+    }
+  }
+
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchResult();
+    } 
+    else {
+      setLoading(false)
+    }
+  }, [isAuthenticated]);
 
   return (
-    <div>
+    <main>
       <NavBar />
-      {/* <Candidate /> */}
-      <div className="p-4 border-black border-2">
-        <div className="font-bold text-center text-5xl">
-          SCORE CARD
+      {loading ? (
+        <div className='h-dvh flex items-center justify-center'>
+          <TailSpin
+              visible={true}
+              height="80"
+              width="80"
+              color="#2A91EB"
+              ariaLabel="tail-spin-loading"
+              radius="1"
+              wrapperStyle={{}}
+              wrapperClass=""
+          />
         </div>
-        <div className="text-start mb-4 text-red-500">
-          Please provide your valuable feedback about Mock Test:
-        </div>
-        <div className="mb-4">
-          <div className="flex justify-between">
-            <div>Total Questions: <span className="font-bold">100</span></div>
-            <div>Total Attempted: <span className="font-bold">0</span></div>
-            <div>Correct Answers: <span className="font-bold">0</span></div>
-            <div>Incorrect Answers: <span className="font-bold">0</span></div>
-            <div>Score: <span className="font-bold">0</span></div>
+      ) : (
+        !isAuthenticated ?  (
+          <div className='flex flex-col items-center justify-center text-center'>
+              <div className=''>
+                <Image 
+                  src={`/gifs/hello.gif`}
+                  alt='hello.gif'
+                  width={500}
+                  height={500}
+                  unoptimized
+                />
+              </div>
+              <h1 className='font-medium text-3xl'>Please login to see your result!</h1>
           </div>
-        </div>
-        <div className="flex justify-between mb-4">
-          <button className="bg-red-500 text-white px-4 py-2 rounded">STUDENT FEEDBACK</button>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded">BACK</button>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white">
-            <thead>
-              <tr>
-                <th className="py-2">Question No.</th>
-                <th className="py-2">Selected Option</th>
-                <th className="py-2">Status</th>
-                <th className="py-2">Correct Option</th>
-              </tr>
-            </thead>
-            <tbody>
-              {questions.map((q) => (
-                <tr key={q.number}>
-                  <td className="border px-4 py-2">{`Question ${q.number}`}</td>
-                  <td className="border px-4 py-2">{q.selectedOption}</td>
-                  <td className="border px-4 py-2">{q.status}</td>
-                  <td className="border px-4 py-2">{q.correctOption}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="mt-4">
-          <div className="flex justify-between">
-            <button className="transition ease-in-out delay-75 bg-white hover:-translate-x-2 hover:scale-80 hover:bg-gray-300 duration-300  backdrop-blur-50 backdrop-brightness-200 text-black font-bold py-2 px-4 rounded">{"<<"}Previous</button>
-            <span>Showing 1 out of 100 entries</span>
-            <button className="transition ease-in-out delay-75 bg-white hover:translate-x-2 hover:scale-80 hover:bg-gray-300 duration-300  backdrop-blur-50 backdrop-brightness-200 text-black font-bold py-2 px-4 rounded">Next{">>"}</button>
+        ) : (
+        <div className="flex flex-col items-center w-full gap-3 px-7 py-3">
+          <div className="font-bold text-center text-3xl">
+            SCORE CARD
           </div>
+          <div className="flex flex-col border rounded-md py-2 px-4 w-max">
+            <h1 className="text-xl font-semibold">Candidate details:</h1>
+            <p>Name: {result?.candidateFirstName} {result?.candidateLastName}</p>
+            <p>Email: {result?.candidateEmail}</p>
+            <p>Exam: {result?.examName}</p>
+            <p>Institute code: {result?.instituteCode}</p>
+          </div>
+          <div className="mb-4 border w-full rounded-md py-4">
+            <div className="flex flex-row justify-around w-full">
+              <div>Total Questions: <span className="font-bold">{result?.questionLength}</span></div>
+              <div>Total Attempted: <span className="font-bold">{parseInt(`${result?.correct}`) + parseInt(`${result?.wrong}`)}</span></div>
+              <div>Correct Answers: <span className="font-bold">{result?.correct}</span></div>
+              <div>Incorrect Answers: <span className="font-bold">{result?.wrong}</span></div>
+              <div>Score: <span className="font-bold">{result?.marks}</span></div>
+            </div>
+          </div>
+          <p>For future reference, please take a screenshot or print it.</p>
+          <Button 
+            onClick={window.print}
+            >
+            Print Page
+          </Button>
         </div>
-      </div>
-    </div>
+      ))}
+    </main>
   );
 };
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { TailSpin } from 'react-loader-spinner';
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -37,13 +38,14 @@ export default function AddQuestions(){
     const [institutionCode, setInstituteCode] = useState<string | null>(null);
     const [examDuration, setExamDuration] = useState<string | null>(null);
     const [questionMark, setQuestionMark] = useState<string | null>(null);
+    const [negativeMark, setNegativeMark] = useState<string | null>(null);
 
     const handleAddDone = async () => {
         localStorage.removeItem("examName");
     };
 
     const handleSubmit = async () => {
-        const sendData = {...question, examName: examName, instituteCode: institutionCode, examDuration: examDuration, questionMark: questionMark};
+        const sendData = {...question, examName: examName, instituteCode: institutionCode, examDuration: examDuration, questionMark: questionMark, negativeMark: negativeMark};
         console.log(JSON.stringify(question));
 
         try {
@@ -107,13 +109,31 @@ export default function AddQuestions(){
             else {
                 setQuestionMark(marks);
             }
+            const negative = localStorage.getItem('negativeMark');
+            if (negative === null) {
+                setNegativeMark(null)
+            }
+            else {
+                setNegativeMark(negative);
+            }
         }
         setLoading(false);
-    }, [isAuthenticated])
+    }, [isAuthenticated]);
 
     if (loading) {
         return (
-            <div>Loading...</div>
+            <div className='h-dvh flex items-center justify-center'>
+          <TailSpin
+              visible={true}
+              height="80"
+              width="80"
+              color="#2A91EB"
+              ariaLabel="tail-spin-loading"
+              radius="1"
+              wrapperStyle={{}}
+              wrapperClass=""
+          />
+        </div>
         )
     }
 
@@ -187,6 +207,7 @@ export function AddExamName() {
     const [examName, setExamName] = useState<string | null>(null);
     const [examDuration, setExamDuration] = useState<string | null>(null);
     const [questionMark, setQuestionMark] = useState<string | null>(null);
+    const [negativeMark, setNegativeMark] = useState<string | null>(null);
     const [hour, setHour] = useState<number>(0);
     const [minute, setMinute] = useState<number>(0);
 
@@ -199,6 +220,7 @@ export function AddExamName() {
 
         localStorage.setItem(`examDuration`, `${duration}`);
         localStorage.setItem(`questionMark`, `${questionMark}`);
+        localStorage.setItem(`negativeMark`, `${negativeMark}`);
         toast.success(`${examName} successfully added!`)
     }
 
@@ -218,6 +240,8 @@ export function AddExamName() {
                     </div>
                     <Label htmlFor="name">Per question marks: </Label>
                     <Input type="text" onChange={(e) => setQuestionMark(e.target.value)} placeholder="Enter question marks" />
+                    <Label htmlFor="name">Negative marking: </Label>
+                    <Input type="text" onChange={(e) => setNegativeMark(e.target.value)} placeholder="Enter negative mark eg. 0.25, 0.5" />
                     <Button onClick={() => handleSubmit()}>Save</Button>
                 </div>
             </div>

@@ -9,23 +9,24 @@ import AddInstitue from "@/components/AddInstitute";
 import AddQuestions from "@/components/AddQuestions";
 import EditQuestion from "@/components/EditQuestion";
 import SearchBar from "@/components/SearchBar";
+import Hero from "@/components/Hero";
 
 export default function Home() {
   const { isAuthenticated, user, permissions } = useKindeBrowserClient();
   // const { user } = useKindeAuth();
 
-  if (!isAuthenticated) {
-    return (
-      <>
-        <NavBar />
-        <main className="flex flex-col p-4">
-          <h1 className="items-center text-center text-4xl font-semibold">
-            Please Login or Register to continue.
-          </h1>
-        </main>
-      </>
-    );
-  }
+  // if (!isAuthenticated) {
+  //   return (
+  //     <>
+  //       <NavBar />
+  //       <main className="flex flex-col p-4">
+  //         <h1 className="items-center text-center text-4xl font-semibold">
+  //           Please Login or Register to continue.
+  //         </h1>
+  //       </main>
+  //     </>
+  //   );
+  // }
 
   // const returnUser = () => {
   //   if (user?.["role"] === "student") {
@@ -39,10 +40,10 @@ export default function Home() {
     <>
       <NavBar />
       {/* <AddInstitue/> */}
-      <AddQuestions/>
+      {/* <AddQuestions/> */}
       {/* <EditQuestion/> */}
       {/* <SearchBar/> */}
-      <main className="flex flex-col p-4 justify-items-center items-center">
+      <main className="">
         {/* <h1 className="items-center text-center text-4xl mb-4">
           Welcome, {<span className="font-semibold">{user?.given_name}</span>}!
         </h1> */}
@@ -52,6 +53,7 @@ export default function Home() {
         <Link href={"/instructions"}>
           <button className="py-2 px-4 bg-blue-600 rounded-md text-white mt-2">Continue</button>
         </Link> */}
+        <Hero/>
       </main>
     </>
   );
