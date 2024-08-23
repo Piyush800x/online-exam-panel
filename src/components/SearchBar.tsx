@@ -1,4 +1,5 @@
 'use client';
+import { TailSpin } from 'react-loader-spinner';
 import { Search } from 'lucide-react';
 import { Input } from "@/components/ui/input"
 import { useEffect, useState } from 'react'
@@ -58,39 +59,6 @@ export default function Searchbar() {
     }, [searchQuery]);
 
     return (
-        // <div className='flex flex-col w-full items-center'>
-        //     <div className='relative flex items-center w-full'>
-        //         <Input
-        //             type="text"
-        //             placeholder="Search by Institute Code or Exam Name"
-        //             value={searchQuery}
-        //             onChange={(e) => setSearchQuery(e.target.value)}
-        //             className=''
-        //         />
-        //     </div>
-
-        //     {loading && <div className="absolute top-0 center mt-16 z-20 bg-white rounded-md shadow-lg p-2 border">Loading...</div>}
-        //      {!loading && searchResults.length > 0 && (
-        //          <div className="absolute top-0 center mt-16 z-20 bg-white rounded-md shadow-lg p-2 border">
-        //             {searchResults.map((result, index) => (
-        //                 <Link href={`/exam/${result._id}`}>
-        //                     <div key={index} className="flex flex-col h-max bg-green-300 rounded-xl mb-2">
-        //                         <div className=''>
-                                    
-        //                             <h3>{result.examName}</h3>
-        //                             <p>{result.instituteCode}</p>
-        //                         </div>
-        //                         {/* <div>
-        //                             {result.questions.map((question, idx) => (
-        //                                 <li key={idx}>{question.questionTitle}</li>
-        //                             ))}
-        //                         </div> */}
-        //                     </div>
-        //                 </Link>
-        //             ))}
-        //         </div>
-        //     )}
-        // </div>
         <div className='flex flex-col w-full items-center'>
             <div className='relative w-full flex flex-col items-center'>
                 <div className='relative w-full'>
@@ -105,7 +73,18 @@ export default function Searchbar() {
 
                 {loading && (
                     <div className="absolute text-center w-full top-0 mt-16 z-20 bg-white rounded-md shadow-lg p-2 border">
-                        Loading...
+                       <div className='h-dvh flex items-center justify-center'>
+                        <TailSpin
+                            visible={true}
+                            height="80"
+                            width="80"
+                            color="#2A91EB"
+                            ariaLabel="tail-spin-loading"
+                            radius="1"
+                            wrapperStyle={{}}
+                            wrapperClass=""
+                        />
+                        </div>
                     </div>
                 )}
                 {!loading && searchResults.length > 0 && (

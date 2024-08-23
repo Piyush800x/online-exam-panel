@@ -4,13 +4,14 @@ import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 import {
   IconArrowLeft,
 } from "@tabler/icons-react";
-import { PlusIcon, Pencil1Icon, TrashIcon } from '@radix-ui/react-icons'
+import { PlusIcon, Pencil1Icon, ReaderIcon, TrashIcon } from '@radix-ui/react-icons'
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import AddQuestions from "./AddQuestions";
 import EditQuestion from "./EditQuestion";
+import EvaluateResults from "./EvaluateResult"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 export function SidebarMain() {
@@ -34,6 +35,14 @@ export function SidebarMain() {
             ),
             component: "EditQuestion",
         },
+        {
+            label: "Evaluate Results",
+            href: "#",
+            icon: (
+                <ReaderIcon className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+            ),
+            component: "EvaluateResults",
+        },
     ];
 
     const renderComponent = () => {
@@ -42,6 +51,8 @@ export function SidebarMain() {
                 return <AddQuestions />;
             case "EditQuestion":
                 return <EditQuestion/>
+            case "EvaluateResults":
+                return <EvaluateResults/>
             default:
                 return <AddQuestions />;
         }

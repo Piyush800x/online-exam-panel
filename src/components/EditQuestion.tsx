@@ -1,4 +1,5 @@
 'use client';
+import { TailSpin } from 'react-loader-spinner';
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import {
@@ -143,7 +144,18 @@ export default function EditQuestion(){
 
     if (loading) {
         return (
-            <div><h1>Loading...</h1></div>
+            <div className='h-dvh flex items-center justify-center'>
+          <TailSpin
+              visible={true}
+              height="80"
+              width="80"
+              color="#2A91EB"
+              ariaLabel="tail-spin-loading"
+              radius="1"
+              wrapperStyle={{}}
+              wrapperClass=""
+          />
+        </div>
         )
     }
 

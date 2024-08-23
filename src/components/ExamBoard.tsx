@@ -1,4 +1,5 @@
 "use client";
+import { TailSpin } from 'react-loader-spinner';
 import Image from "next/image";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -37,7 +38,6 @@ export default function ExamBoard({ questionsFull, examName, instituteCode, exam
   const [markedForReview, setMarkedForReview] = useState<number[]>([]);
   const router = useRouter();
 
-  console.log(JSON.stringify(`OBJ : ${questions}`));
   const handleOptionChange = (value: string) => {
     setSelectedOption(value);
   };
@@ -203,10 +203,20 @@ export default function ExamBoard({ questionsFull, examName, instituteCode, exam
 
 
   if (questions.length === 0) {
-    return <div className="flex flex-col items-center justify-center">
-      <Image src={`/image/Exam/Duck.gif`} unoptimized={true} alt="Loading" width={300} height={300}/>
-      <h1 className="text-2xl">Loading...</h1>
-    </div>;
+    return (
+      <div className='h-dvh flex items-center justify-center'>
+        <TailSpin
+            visible={true}
+            height="80"
+            width="80"
+            color="#2A91EB"
+            ariaLabel="tail-spin-loading"
+            radius="1"
+            wrapperStyle={{}}
+            wrapperClass=""
+            />
+      </div>
+      )
   }
 
   return (

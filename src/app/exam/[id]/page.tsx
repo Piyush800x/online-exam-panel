@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
+import Instructions from "@/components/Instructions";
 
 interface Questions {
   questionTitle: string;
@@ -24,6 +25,8 @@ export default function ExamUi({params}: {params: {id: string}}) {
   const [examName, setExamName] = useState<string>('');
   const [instituteCode, setInstituteCode] = useState<string>('');
   const [examDuration, setExamDuration] = useState<string>('');
+  const [perQuestionMark, setPerQuestionMark] = useState<string>('');
+  const [perQuestionNegativeMark, setPerQuestionNegativeMark] = useState<string>('');
 
   const fetchQuestions = async () => {
     const sendData = {
@@ -45,6 +48,8 @@ export default function ExamUi({params}: {params: {id: string}}) {
         setExamName(data.data[0].examName)
         setInstituteCode(data.data[0].instituteCode)
         setExamDuration(data.data[0].questions[0].examDuration)
+        setPerQuestionMark(data.data[0].questions[0].questionMark)
+        setPerQuestionNegativeMark(data.data[0].questions[0].negativeMark)
       }
     }
     catch (error) {
@@ -65,7 +70,18 @@ export default function ExamUi({params}: {params: {id: string}}) {
     return (
       <main className="flex flex-col  justify-center">
         <NavBar/>
-        <h1 className="items-center text-center text-4xl mt-4 font-semibold">Register or Login to start exam.</h1>
+        <div className='flex flex-col items-center justify-center text-center'>
+            <div className=''>
+              <Image 
+                src={`/gifs/hello.gif`}
+                alt='hello.gif'
+                width={500}
+                height={500}
+                unoptimized
+              />
+            </div>
+            <h1 className='font-medium text-3xl'>Please login to start your exam.</h1>
+          </div>
       </main>
     )
   }
@@ -74,6 +90,7 @@ export default function ExamUi({params}: {params: {id: string}}) {
     return (
       <main className="flex flex-col">
         <NavBar/>
+        <Instructions/>
         <div className="flex flex-col items-center my-10">
           <label htmlFor="exam" className="text-3xl font-semibold mb-2">Click Start to start the exam</label>
           <Button disabled={loading} className="text-xl " onClick={() => setExam(true)}>Start</Button>
@@ -85,7 +102,7 @@ export default function ExamUi({params}: {params: {id: string}}) {
   return (
     <main>
       <NavBar/>
-      <Candidate time={examDuration} instituteCode={instituteCode} examName={examName}/>
+      <Candidate time={examDuration} instituteCode={instituteCode} examName={examName} perQuesMark={perQuestionMark} perQuesNegativeMark={perQuestionNegativeMark}/>
       <ExamBoard questionsFull={questions} examName={examName} instituteCode={instituteCode} examDuration={examDuration}/>
       <div>
 
