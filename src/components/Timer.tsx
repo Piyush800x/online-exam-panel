@@ -45,7 +45,7 @@ export default function Timer({ time }: { time: string }) {
 
   return (
     <div className="bg-orange-100 text-orange-700 px-2 py-1 rounded-lg cursor-not-allowed">
-      {timerComponents.length ? timerComponents : <span>Time's up!</span>}
+      {timerComponents.length ? timerComponents : <span>Time&apos;s up!</span>}
     </div>
   );
 }

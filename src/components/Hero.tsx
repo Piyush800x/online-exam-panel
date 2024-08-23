@@ -119,12 +119,12 @@ export default function Hero() {
                     <div className="text-muted-foreground">University of Excellence</div>
                   </div>
                   <p className="text-muted-foreground">
-                    "The Exam Panel platform has been a game-changer for our\n university. The security features and
-                    detailed reporting\n have helped us maintain the integrity of our exams."
+                  &quot;The Exam Panel platform has been a game-changer for our university. The security features and
+                    detailed reporting have helped us maintain the integrity of our exams.&quot;
                   </p>
                 </div>
                 <div className="mx-auto flex w-full flex-col items-center justify-center gap-4 p-4 sm:p-8">
-                  <img
+                  <Image
                     src="https://avatar.iran.liara.run/public"
                     width="64"
                     height="64"
@@ -137,12 +137,12 @@ export default function Hero() {
                     <div className="text-muted-foreground">Acme Corporation</div>
                   </div>
                   <p className="text-muted-foreground">
-                    "We've been using the Exam Panel platform for our\n certification exams, and the ease of scheduling
-                    and\n candidate management has been a huge time-saver for our\n team."
+                  &quot;We've been using the Exam Panel platform for our certification exams, and the ease of scheduling
+                    and candidate management has been a huge time-saver for our team.&quot;
                   </p>
                 </div>
                 <div className="mx-auto flex w-full flex-col items-center justify-center gap-4 p-4 sm:p-8">
-                  <img
+                  <Image
                     src="https://avatar.iran.liara.run/public"
                     width="64"
                     height="64"
@@ -155,9 +155,9 @@ export default function Hero() {
                     <div className="text-muted-foreground">Edtech Solutions</div>
                   </div>
                   <p className="text-muted-foreground">
-                    "The Exam Panel platform has been a game-changer for our\n online education business. The robust
-                    security features\n and detailed analytics have helped us deliver a\n top-notch exam experience to
-                    our students."
+                  &quot;The Exam Panel platform has been a game-changer for our online education business. The robust
+                    security features and detailed analytics have helped us deliver a top-notch exam experience to
+                    our students.&quot;
                   </p>
                 </div>
               </div>

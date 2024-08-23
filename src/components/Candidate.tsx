@@ -15,7 +15,7 @@ import Timer from "@/components/Timer";
 export default function Candidate({time, examName, instituteCode, perQuesMark, perQuesNegativeMark}: {time: string, examName: string, instituteCode: string, perQuesMark: string, perQuesNegativeMark: string}) {
     const {user} = useKindeBrowserClient();
     const [candidate, SetCandidate] = useState<any>('')
-    console.log(user);
+    // console.log(user);
     return (
         <div className="flex flex-row justify-between px-10 pb-2 mt-2 border-b-2">
             <div className="flex flex-row justify-between items-center gap-4">

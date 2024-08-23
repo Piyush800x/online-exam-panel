@@ -1,9 +1,7 @@
 'use client';
 import { TailSpin } from 'react-loader-spinner';
 import AddInstitute from "@/components/AddInstitute";
-import AddQuestions from "@/components/AddQuestions";
 import NavBar from "@/components/NavBar";
-import SearchBar from "@/components/SearchBar";
 import {SidebarMain} from "@/components/SidebarMain";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { useEffect, useState } from "react";

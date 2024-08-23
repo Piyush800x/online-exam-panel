@@ -1,7 +1,6 @@
 'use client';
 import { TailSpin } from 'react-loader-spinner';
 import NavBar from '@/components/NavBar';
-import Candidate from '@/components/Candidate';
 import React, { useEffect, useState } from 'react';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 

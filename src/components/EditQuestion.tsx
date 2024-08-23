@@ -63,7 +63,7 @@ export default function EditQuestion(){
             if (data.success) {
                 toast.success(`${questionTitle} Successfully Updated!`);
                 setFormData(data.data);
-                console.log(JSON.stringify(data.data));
+                // console.log(JSON.stringify(data.data));
             }
             else {
                 toast.error("Can't Update!");

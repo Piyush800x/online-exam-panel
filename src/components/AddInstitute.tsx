@@ -24,7 +24,7 @@ export default function AddInstitute() {
     })
 
     const handleSubmit = async () => {
-        console.log(formData);
+        // console.log(formData);
         const sendData = {...formData, userAuthId: user?.id};
         try {
             const res = await fetch('/api/institute', {
