@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Online Exam Panel
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+An online platform for conducting secure and efficient exams for educational institutions. This application allows institutes to manage exams and students to participate in them, ensuring data security and integrity throughout the process.
+
+## Table of Contents
+
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [API Documentation](#api-documentation)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Features
+
+- **Student and Institute Login**: Secure login system for both students and institutes using Kinde.
+- **Institute Question Upload**: Allows institutes to upload and manage exam questions securely.
+- **Security**: Ensures that answer keys and sensitive information are not accessible from the frontend.
+- **Database Management**: Efficient storage and retrieval of questions, answers, and user data using MongoDB.
+- **Responsive Design**: Built with Tailwind CSS for a mobile-friendly user interface.
+
+## Technologies Used
+
+- **Frontend**: React.js, Tailwind CSS
+- **Backend**: Node.js, Next.js
+- **Database**: MongoDB
+- **Authentication**: KindeAuth
+- **Version Control**: Git and GitHub
 
 ## Getting Started
 
-First, run the development server:
+To get a local copy of the project up and running, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Prerequisites
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Make sure you have the following installed on your local machine:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Node.js** (v14 or above)
+- **npm** (v6 or above)
+- **MongoDB** (running locally or use a MongoDB Atlas cloud instance)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Installation
 
-## Learn More
+1. **Clone the repository**:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   git clone https://github.com/shibammitra24/online-exam-panel.git
+   cd online-exam-panel
+2. **Add environment variables**:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+    MONGODB_URI= *PASTE HERE*
+    KINDE_CLIENT_ID= *PASTE HERE*
+    KINDE_CLIENT_SECRET= *PASTE HERE*
+    KINDE_ISSUER_URL= *PASTE HERE*
+    KINDE_SITE_URL= *PASTE HERE*
+    KINDE_POST_LOGOUT_REDIRECT_URL= *PASTE HERE*
+    KINDE_POST_LOGIN_REDIRECT_URL= *PASTE HERE*
+2. **Run the server**:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   ```bash
+   npm run dev
