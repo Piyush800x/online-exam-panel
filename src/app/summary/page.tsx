@@ -111,7 +111,7 @@ export default function ExamSummary() {
       <div className="fixed inset-0 z-100 flex items-center justify-center bg-black text-white text-center p-4">
         <div>
           <h1 className="text-2xl font-bold">Please open in desktop</h1>
-          <p className="mt-2">This website is not optimized for mobile devices.</p>
+          <p className="mt-2">This site is developed for desktop systems.</p>
         </div>
       </div>
     );
