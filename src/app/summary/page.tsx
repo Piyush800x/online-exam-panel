@@ -24,6 +24,8 @@ export default function ExamSummary() {
   const [institueCode, setInitCode] = useState<string | null>('');
   const [loading, setLoading] = useState<Boolean>(true);
 
+  const [isMobile, setIsMobile] = useState(false);
+
   const fetchData = async () => {
     const v1 = localStorage.getItem('markedForReview');
     const v2 = localStorage.getItem('notVisited');
@@ -84,6 +86,36 @@ export default function ExamSummary() {
     }
   }, [isAuthenticated])
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) { // Adjust this value if needed for mobile width
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    // Run the function on initial load
+    handleResize();
+
+    // Add event listener for resize
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  if (isMobile) {
+    return (
+      <div className="fixed inset-0 z-100 flex items-center justify-center bg-black text-white text-center p-4">
+        <div>
+          <h1 className="text-2xl font-bold">Please open in desktop</h1>
+          <p className="mt-2">This website is not optimized for mobile devices.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     

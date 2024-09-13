@@ -32,7 +32,7 @@ export default function NavBar() {
     <nav className="sticky top-0 bg-zinc-700 max-h-200 border-b flex items-center text-white z-50">
       <div className="flex justify-between items-center h-full w-full px-4 py-2 2xl:px-16">
         <Link href="/">
-          <h1 className='text-2xl font-semibold'>ExamFile<span className="text-lg">.com</span></h1>
+          <h1 className='text-2xl font-semibold'>Exam Panel</h1>
         </Link>
         <div className='text-black w-1/5'>
           <Searchbar/>
